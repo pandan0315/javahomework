@@ -214,7 +214,7 @@ public class ClientJFrame extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
 
-        connectButton.setEnabled(true);
+        //connectButton.setEnabled(true);
         String wordToBeSubmitted = inputTextField.getText().trim();
         if (!isValidInput(wordToBeSubmitted)) {
             JOptionPane.showMessageDialog(this, "The input is not valid\nOnly letter a-z are allowed", "Error", JOptionPane.ERROR_MESSAGE);
