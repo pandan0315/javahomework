@@ -69,6 +69,7 @@ class ConnectionHandler implements Runnable {
         }
         String startStr = "_start_";
         if (msgStr.equals(startStr)) {
+            
             pickedWord = pickupWord();
             System.out.println(pickedWord);
             currentWord = new char[10];

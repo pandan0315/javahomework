@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,28 +19,29 @@ import java.util.Random;
 public class WordReader {
     
     public static synchronized String getWord() {
-        StringBuffer buffer = new StringBuffer();
+        //StringBuffer buffer = new StringBuffer();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
-            Random rand = new Random(System.currentTimeMillis());
-            
+            String line = reader.readLine();
+            List<String> lines = new ArrayList<>();
+            while (line != null) {
+                lines.add(line);
+                line = reader.readLine();
+            }
             while(true) {
-                int randInt = rand.nextInt(25140) + 1;
-                for (int i = 0; i < randInt; i++) {
-                    int length = buffer.length();
-                    buffer.delete(0, length);
-                    buffer.append(reader.readLine());
+                Random r = new Random(System.currentTimeMillis());
+                String randomLine = lines.get(r.nextInt(lines.size()));
+                if(WordReader.isWordValid(randomLine)) {
+                    return randomLine;
                 }
-                if (isWordValid(buffer)) {
-                    break;
-                }
-            } 
+            }
+
         }
         catch (IOException e)
         {
             System.out.println(e.getMessage());
+            return null;
         }
-        return buffer.toString();
     }
     
     /**
@@ -46,7 +49,7 @@ public class WordReader {
      * @param word
      * @return
      */
-    private static boolean isWordValid(StringBuffer word) {
+    private static boolean isWordValid(String word) {
         boolean isValid = true;
         int length = word.length();
         // the length of word can not larger than 10
@@ -54,8 +57,7 @@ public class WordReader {
         // Check if the word contains invalid characters.
         for (int i = 0; i < length; i++) {
             char c = word.charAt(i);
-            int charValue = (int)c;
-            if (charValue > 122 || charValue < 97) {
+            if (c < 'a' || c > 'z') {
                 isValid = false;
                 break;
             }

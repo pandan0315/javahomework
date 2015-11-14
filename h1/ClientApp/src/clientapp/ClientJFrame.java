@@ -6,6 +6,7 @@
 package clientapp;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -13,10 +14,13 @@ import javax.swing.SwingUtilities;
  * @author danpan
  */
 public class ClientJFrame extends javax.swing.JFrame {
+
     private ServerConnection connection;
-    private int attempts=10;
+    private int attempts = 10;
     private final ArrayList<String> guessedWord = new ArrayList<String>();
-    private boolean sameWord = false;
+    //private String wordToBeSubmitted;
+    private boolean isGuessedWord = false;
+
     /**
      * Creates new form ClientJFrame
      */
@@ -24,6 +28,7 @@ public class ClientJFrame extends javax.swing.JFrame {
         initComponents();
         submitButton.setEnabled(false);
         startButton.setEnabled(false);
+        inputTextField.setEnabled(false);
     }
 
     /**
@@ -182,38 +187,58 @@ public class ClientJFrame extends javax.swing.JFrame {
         String host = hostText.getText();
         int port = Integer.parseInt(portText.getText());
         connectButton.setEnabled(false);
-        
+
         submitButton.setEnabled(false);
-        connection = new ServerConnection(ClientJFrame.this,host,port);
+        connection = new ServerConnection(ClientJFrame.this, host, port);
         new Thread(connection).start();
-        
+
     }//GEN-LAST:event_connectButtonActionPerformed
+
+    private boolean isValidInput(String input) {
+        if (input == null) {
+            return false;
+        }
+        if (input.length() == 0) {
+            return false;
+        }
+        //input = input.toLowerCase();
+        for (int i = 0; i < input.length(); ++i) {
+            char c = input.charAt(i);
+            if (c < 'a' || c > 'z') {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
-        
+
         connectButton.setEnabled(true);
-        String wordToBeSubmitted = inputTextField.getText();
-        if(guessedWord.contains(wordToBeSubmitted)) {
-            
-            sameWord = true;
-        }else {
-            sameWord = false;
+        String wordToBeSubmitted = inputTextField.getText().trim();
+        if (!isValidInput(wordToBeSubmitted)) {
+            JOptionPane.showMessageDialog(this, "The input is not valid\nOnly letter a-z are allowed", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.isGuessedWord = this.guessedWord.contains(wordToBeSubmitted);
+        if (!guessedWord.contains(wordToBeSubmitted)) {
             guessedWord.add(wordToBeSubmitted);
-        } 
+        }
         connection.guess(wordToBeSubmitted);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
+
+        guessedWord.clear();
         statusLabel.setText("Game Start!");
-        attempts=10;
+        attempts = 10;
         attemptsLabel.setText("");
         inputTextField.setText("");
         connection.startgame();
         submitButton.setEnabled(true);
-        
-        
+        inputTextField.setEnabled(true);
+        this.isGuessedWord = false;
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -249,17 +274,14 @@ public class ClientJFrame extends javax.swing.JFrame {
                 new ClientJFrame().setVisible(true);
             }
         });
-        
-        
+
     }
-void connected()
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+
+    void connected() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                
+            public void run() {
+
                 startButton.setEnabled(true);
                 //submitButton.setEnabled(true);
                 //connectButton.setEnabled(false);
@@ -267,56 +289,63 @@ void connected()
             }
         });
     }
+    /*
+     private boolean isStartWord(String word) {
+     if (null == word) return false;
+     if (0 == word.length()) return false;
+     for (int i = 0; i < word.length(); ++i) {
+     char c = word.charAt(i);
+     if
+     }
+     return true;
+     }
+     */
 
-
-   void showCurrentResult(String result){
-       SwingUtilities.invokeLater(new Runnable()
-        {
+    void showCurrentResult(String result) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String previousText = guessWordLabel.getText();
-                if (previousText.equals(result) && !sameWord) {attempts-=1;}
+                if (previousText.equals(result) &&
+                        !ClientJFrame.this.guessedWord.isEmpty() && 
+                        !ClientJFrame.this.isGuessedWord) {
+                     
+                       attempts -= 1;
+                }
                 guessWordLabel.setText(result);
-                
+
             }
         });
-       
-    
-       
-       
-}
-   
-   void showAttempts( ){
-       SwingUtilities.invokeLater(new Runnable()
-        {
+
+    }
+
+    void showAttempts() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 attemptsLabel.setText(Integer.toString(attempts));
-                
+
             }
         });
-   }
-   
-   void showStatusResult(){
-       SwingUtilities.invokeLater(new Runnable()
-        {
+    }
+
+    void showStatusResult() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                if((attempts>=0)&&(!guessWordLabel.getText().contains("_"))){
+            public void run() {
+                if ((attempts >= 0) && (!guessWordLabel.getText().contains("_"))) {
                     statusLabel.setText("YOU WIN!");
                     submitButton.setEnabled(false);
-                }else if(attempts==0){statusLabel.setText("YOU LOSE!");
-                submitButton.setEnabled(false);}
-                
+                } else if (attempts == 0) {
+                    statusLabel.setText("YOU LOSE!");
+                    submitButton.setEnabled(false);
+                }
+
             }
         });
-   }
-   
-      
-   
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel attemptsLabel;
     private javax.swing.JButton connectButton;

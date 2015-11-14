@@ -38,8 +38,8 @@ public class ServerApp {
              // serverSocket.setSoTimeout(10000);
             while (listening) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println(clientSocket.getInetAddress());
-                System.out.println(clientSocket.getPort());
+                //System.out.println(clientSocket.getInetAddress());
+                //System.out.println(clientSocket.getPort());
                new Thread(new ConnectionHandler(clientSocket)).start();   
               
             }
