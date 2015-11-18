@@ -121,8 +121,10 @@ class ServerConnection implements Runnable {
                if (result instanceof Message){
                    resMessage=(Message)result;
             }
-               
-                gui.showCurrentResult(resMessage.getCurrentWord());
+                String wordToShow=resMessage.getCurrentWord();
+                wordToShow = wordToShow.substring(1, wordToShow.length() - 2);
+                wordToShow = wordToShow.replace(',', ' ');
+                gui.showCurrentResult(wordToShow);
                 gui.showAttempts(resMessage.getAttempts());
                 gui.showStatusResult(resMessage.getStatus());
                 gui.showScoreResult(resMessage.getScore());
