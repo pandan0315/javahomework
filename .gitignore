@@ -1,2 +1,6 @@
 h1/ServerApp/build/*
 h1/ClientApp/build/*
+/h1/mesProcess/nbproject/private/
+/h1/mesProcess/build/
+/h1/Message/dist/
+/h1/ServerApp/dist/

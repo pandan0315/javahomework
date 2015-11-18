@@ -334,7 +334,7 @@ public class ClientJFrame extends javax.swing.JFrame {
             public void run() {
                 statusLabel.setText(status);
                 String getStatus=statusLabel.getText();
-                if(getStatus.equals("YOU WIN!")|(getStatus.equals("YOU LOSE"))){
+                if(getStatus.contains("WIN")|| (getStatus.contains("LOSE"))){
                     submitButton.setEnabled(false);
                 }
                

@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +74,9 @@ class ConnectionHandler implements Runnable {
                     }
                 }
               //Thread.sleep(5000);
-                out.writeObject(new Message(attempts,outMsg,score,gameStatus));
+                Message retMessage = new Message(attempts,outMsg,score,gameStatus);
+                System.out.println(retMessage);
+                out.writeObject(retMessage);
                 out.flush();
 
             }
