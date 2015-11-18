@@ -16,9 +16,9 @@ import javax.swing.SwingUtilities;
 public class ClientJFrame extends javax.swing.JFrame {
 
     private ServerConnection connection;
-    private int attempts = 10;
+  
     private final ArrayList<String> guessedWord = new ArrayList<String>();
-    //private String wordToBeSubmitted;
+    
     private boolean isGuessedWord = false;
 
     /**
@@ -55,6 +55,7 @@ public class ClientJFrame extends javax.swing.JFrame {
         startButton = new javax.swing.JButton();
         attemptsLabel = new javax.swing.JLabel();
         guessWordLabel = new javax.swing.JLabel();
+        scoreLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -98,12 +99,19 @@ public class ClientJFrame extends javax.swing.JFrame {
 
         attemptsLabel.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
 
+        scoreLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(guessWordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,27 +127,29 @@ public class ClientJFrame extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(connectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(startButton)))
+                            .addComponent(startButton))))
+                .addContainerGap(55, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(guessWordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jLable4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(attemptsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(jLable4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(attemptsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(submitButton)
-                        .addGap(43, 43, 43)
-                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -151,7 +161,7 @@ public class ClientJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(portText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(connectButton))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(inputLabel)
@@ -159,21 +169,23 @@ public class ClientJFrame extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(submitButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLable4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(attemptsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(48, 48, 48))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(startButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(guessWordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         getContentPane().add(mainPanel);
@@ -214,31 +226,27 @@ public class ClientJFrame extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
 
-        //connectButton.setEnabled(true);
+     
         String wordToBeSubmitted = inputTextField.getText().trim();
         if (!isValidInput(wordToBeSubmitted)) {
             JOptionPane.showMessageDialog(this, "The input is not valid\nOnly letter a-z are allowed", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        this.isGuessedWord = this.guessedWord.contains(wordToBeSubmitted);
-        if (!guessedWord.contains(wordToBeSubmitted)) {
-            guessedWord.add(wordToBeSubmitted);
-        }
+         
         connection.guess(wordToBeSubmitted);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
 
-        guessedWord.clear();
-        statusLabel.setText("Game Start!");
-        attempts = 10;
+        
         attemptsLabel.setText("");
         inputTextField.setText("");
-        connection.startgame();
         submitButton.setEnabled(true);
+        connection.startgame();
+        
         inputTextField.setEnabled(true);
-        this.isGuessedWord = false;
+       
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -283,64 +291,53 @@ public class ClientJFrame extends javax.swing.JFrame {
             public void run() {
 
                 startButton.setEnabled(true);
-                //submitButton.setEnabled(true);
-                //connectButton.setEnabled(false);
-                //statusLabel.setText("Game start!");
+               
             }
         });
     }
-    /*
-     private boolean isStartWord(String word) {
-     if (null == word) return false;
-     if (0 == word.length()) return false;
-     for (int i = 0; i < word.length(); ++i) {
-     char c = word.charAt(i);
-     if
-     }
-     return true;
-     }
-     */
+    
 
     void showCurrentResult(String result) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                String previousText = guessWordLabel.getText();
-                if (previousText.equals(result) &&
-                        !ClientJFrame.this.guessedWord.isEmpty() && 
-                        !ClientJFrame.this.isGuessedWord) {
-                     
-                       attempts -= 1;
-                }
-                guessWordLabel.setText(result);
+              
+                      guessWordLabel.setText(result);
 
             }
         });
 
     }
 
-    void showAttempts() {
+    void showAttempts(int attempts) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 attemptsLabel.setText(Integer.toString(attempts));
-
+                
             }
         });
     }
-
-    void showStatusResult() {
+    void showScoreResult(int score){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if ((attempts >= 0) && (!guessWordLabel.getText().contains("_"))) {
-                    statusLabel.setText("YOU WIN!");
-                    submitButton.setEnabled(false);
-                } else if (attempts == 0) {
-                    statusLabel.setText("YOU LOSE!");
+                scoreLabel.setText("Your score is  "+Integer.toString(score));
+                
+            }
+        });
+    }  
+   
+    void showStatusResult(String status) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                statusLabel.setText(status);
+                String getStatus=statusLabel.getText();
+                if(getStatus.equals("YOU WIN!")|(getStatus.equals("YOU LOSE"))){
                     submitButton.setEnabled(false);
                 }
-
+               
             }
         });
     }
@@ -359,6 +356,7 @@ public class ClientJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLable4;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTextField portText;
+    private javax.swing.JLabel scoreLabel;
     private javax.swing.JButton startButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton submitButton;

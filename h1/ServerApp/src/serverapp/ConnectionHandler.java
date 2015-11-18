@@ -10,11 +10,15 @@ package serverapp;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import message.Message;
 
 /**
  *
@@ -27,7 +31,14 @@ class ConnectionHandler implements Runnable {
     private String pickedWord;
     private char[] currentWord;
     private char[] inputCharArray;
-
+    private int attempts=10;
+    private final ArrayList<String> guessedWord = new ArrayList<String>();
+    private boolean isGuessedWord = false;
+    private String outMsg;
+    private int score=0;
+    private String gameStatus="GAME START!";
+    
+    
     public ConnectionHandler(Socket clientSocket) {
 
         this.clientSocket = clientSocket;
@@ -37,39 +48,54 @@ class ConnectionHandler implements Runnable {
     public String getPickedWord() {
         return pickedWord;
     }
-
+    
+    
     @Override
     public void run() {
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream())) {
+        try (   ObjectOutputStream out= new ObjectOutputStream(clientSocket.getOutputStream());
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
+               
+               ) {
 
             while (true) {
+                String previousOutMsg=Arrays.toString(currentWord);
                 String msg = in.readLine();
-
+                
                 processMsg(msg);
-                //Thread.sleep(5000);
-
-                String outmsg = Arrays.toString(currentWord);
-                out.println(outmsg);
+             
+                if(attempts>=0&&!outMsg.contains("_")){
+                    gameStatus="YOU WIN!";
+                   score+=1; 
+                }
+                else if(attempts==0){
+                    gameStatus="YOU LOSE!";
+                    if(score>0){
+                        score-=1;
+                    }
+                }
+              //Thread.sleep(5000);
+                out.writeObject(new Message(attempts,outMsg,score,gameStatus));
                 out.flush();
 
             }
         } catch (IOException ex) {
             Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } //catch (InterruptedException ex) {
-           // Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        //}
+        } 
 
     }
 
     private void processMsg(String msgStr) {
+         String previousOutMsg= Arrays.toString(currentWord);
         if (msgStr == null || msgStr.length() == 0) {
             return;
         }
         String startStr = "_start_";
         if (msgStr.equals(startStr)) {
             
+           this.guessedWord.clear();
+           attempts=10;
+           this.gameStatus="GAME START!";
             pickedWord = pickupWord();
             System.out.println(pickedWord);
             currentWord = new char[10];
@@ -78,8 +104,22 @@ class ConnectionHandler implements Runnable {
             }
 
         } else {
-            compareWord(msgStr, pickedWord);
+            this.isGuessedWord=this.guessedWord.contains(msgStr);
+            if (!guessedWord.contains(msgStr)) {
+            guessedWord.add(msgStr);
         }
+             
+            compareWord(msgStr, pickedWord);
+       
+        }
+        
+        outMsg=Arrays.toString(currentWord);
+        
+        if(previousOutMsg.equals(outMsg)&&!this.isGuessedWord&&!this.guessedWord.isEmpty()){
+            this.attempts-=1;
+        }
+        
+        
     }
 
     private String pickupWord() {
@@ -112,3 +152,4 @@ class ConnectionHandler implements Runnable {
 
     }
 }
+

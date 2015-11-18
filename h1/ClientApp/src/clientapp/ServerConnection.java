@@ -5,18 +5,18 @@
  */
 package clientapp;
 
-//import java.io.BufferedInputStream;
-//import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
+
+
 import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import message.Message;
 /**
  *
  * @author danpan
@@ -28,7 +28,9 @@ class ServerConnection implements Runnable {
     private final LinkedBlockingQueue<String> strings
             = new LinkedBlockingQueue<>();
     private ClientJFrame gui;
-    private BufferedReader in;
+   
+    private ObjectInputStream in;
+    
     private PrintWriter out;
     private Socket clientSocket;
 
@@ -43,12 +45,16 @@ class ServerConnection implements Runnable {
      * The run method of the communication thread. First connects to the server
      * using the host name and port number specified in the constructor. Second
      * waits to receive a letter or a word from the gui and sends that to the
-     * reverse server. This is done once, then the thread dies.
+     * server.
      */
     @Override
     public void run() {
         connect();
-        callServer();
+        try {
+            callServer();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         disconnect();
     }
 
@@ -61,8 +67,10 @@ class ServerConnection implements Runnable {
         try {
             this.clientSocket = new Socket(host, port);
 
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+          
             out = new PrintWriter(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            
             gui.connected();
 
         } catch (UnknownHostException e) {
@@ -78,40 +86,46 @@ class ServerConnection implements Runnable {
     
     private void disconnect() {
         try {
-            this.clientSocket.close();
+           this.clientSocket.close();
         } catch (IOException e) {
         }
     }
 
     void guess(String word) {
         strings.add(word);
-        //callServer(word);
+       
     }
 
     void startgame() {
         strings.add("_start_");
-        //callServer("_start_");
+        
     }
 
-    void callServer() {
-        String result;
-        //String attempts = null;
+    void callServer() throws ClassNotFoundException {
+       Object result;
+       Message resMessage=new Message(10,"_,_,_,_,_,_,_,_,_,_",0,"GAME START!");
+       
         try {
             while (true) {
                 String msg = strings.take();
                 out.println(msg);
                 out.flush();
 
-           // get result from server
-                //byte[] fromServer = new byte[128];
-                //int n = in.read(fromServer);
-                result = in.readLine();
-                result = result.substring(1, result.length() - 2);
-                result = result.replace(',', ' ');
-
-                gui.showCurrentResult(result);
-                gui.showAttempts();
-                gui.showStatusResult();
+          
+                //result = in.readLine();
+               // result = result.substring(1, result.length() - 2);
+              //  result = result.replace(',', ' ');
+                
+                result=in.readObject();
+               
+               if (result instanceof Message){
+                   resMessage=(Message)result;
+            }
+               
+                gui.showCurrentResult(resMessage.getCurrentWord());
+                gui.showAttempts(resMessage.getAttempts());
+                gui.showStatusResult(resMessage.getStatus());
+                gui.showScoreResult(resMessage.getScore());
             }
 
         } catch (InterruptedException ex) {
@@ -119,7 +133,6 @@ class ServerConnection implements Runnable {
         } catch (IOException e) {
         }
 
-        //gui.showGuessedWords();
-        //gui.showCurrentResult();
+       
     }
 }
