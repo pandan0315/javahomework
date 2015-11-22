@@ -1,20 +1,20 @@
 package server;
 
-import bank.bankAccount;
+import bank.BankAccount;
 
 import java.rmi.RemoteException;
 
 /**
  * Created by danpan on 22/11/15.
  */
-public class clientAccountImpl implements clientAccount {
+public class ClientAccountImpl implements ClientAccount {
 
     private String name;
-    private bankAccount bankaccount;
+    private BankAccount bankaccount;
 
 
 
-    public clientAccountImpl(String name,bankAccount bankaccount){
+    public ClientAccountImpl(String name, BankAccount bankaccount){
         this.name=name;
         this.bankaccount=bankaccount;
     }
@@ -24,11 +24,11 @@ public class clientAccountImpl implements clientAccount {
     }
 
     @Override
-    public bankAccount getBankAccount() throws RemoteException {
+    public BankAccount getBankAccount() throws RemoteException {
         return bankaccount;
     }
 
 
-    ;
+
     }
-}
+

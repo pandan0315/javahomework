@@ -8,25 +8,25 @@ import java.util.Map;
 /**
  * Created by danpan on 21/11/15.
  */
-public class bankImpl extends UnicastRemoteObject implements bank {
+public class BankImpl extends UnicastRemoteObject implements Bank {
     private String bankName;
-    private Map<String, bankAccount> accounts = new HashMap<>();
+    private Map<String, BankAccount> accounts = new HashMap<>();
 
-    public bankImpl(String bankName) throws RemoteException {
+    public BankImpl(String bankName) throws RemoteException {
         super();
         this.bankName = bankName;
     }
 
 
     @Override
-    public synchronized bankAccount newAccount(String name) throws RemoteException, RejectedException {
-        bankAccountImpl account = (bankAccountImpl) accounts.get(name);
+    public synchronized BankAccount newAccount(String name) throws RemoteException, RejectedException {
+        BankAccountImpl account = (BankAccountImpl) accounts.get(name);
         if (account != null) {
             System.out.println("Account [" + name + "] exists!!!");
             throw new RejectedException("Rejected: Bank: " + bankName
                     + " Account for: " + name + " already exists: " + account);
         }
-        account = new bankAccountImpl(name);
+        account = new BankAccountImpl(name);
         accounts.put(name, account);
         System.out.println("Bank: " + bankName + " Account: " + account
                 + " has been created for " + name);
@@ -35,8 +35,8 @@ public class bankImpl extends UnicastRemoteObject implements bank {
 
     }
 
-    @Override
-    public synchronized bankAccount getAccount(String name) throws RemoteException {
+    /*@Override
+    public synchronized BankAccount getAccount(String name) throws RemoteException {
         return null;
     }
 
@@ -60,4 +60,6 @@ public class bankImpl extends UnicastRemoteObject implements bank {
     public synchronized String[] listAccounts() throws RemoteException {
         return accounts.keySet().toArray(new String[1]);
     }
+    */
 }
+
