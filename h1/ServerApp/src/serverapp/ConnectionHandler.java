@@ -21,7 +21,7 @@ import message.Message;
 
 /**
  *
- * @author danpan
+ * \
  */
 class ConnectionHandler implements Runnable {
 
@@ -73,7 +73,7 @@ class ConnectionHandler implements Runnable {
                         score-=1;
                     }
                 }
-              //Thread.sleep(5000);
+              Thread.sleep(5000);
                 Message retMessage = new Message(attempts,outMsg,score,gameStatus);
                 System.out.println(retMessage);
                 out.writeObject(retMessage);
@@ -82,6 +82,8 @@ class ConnectionHandler implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (InterruptedException ex) {
+           Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
         } 
 
     }

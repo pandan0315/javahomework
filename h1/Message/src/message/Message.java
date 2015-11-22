@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Dan
+ * 
  */
 public class Message implements Serializable {
      private int attempts;

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author danpan
+ * 
  */
 public class WordReader {
     

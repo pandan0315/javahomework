@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author danpan
+ * 
  */
 public class ServerApp {
     
@@ -35,7 +35,7 @@ public class ServerApp {
     }
     public void server(){
         try {
-             // serverSocket.setSoTimeout(10000);
+           
             while (listening) {
                 Socket clientSocket = serverSocket.accept();
                 //System.out.println(clientSocket.getInetAddress());

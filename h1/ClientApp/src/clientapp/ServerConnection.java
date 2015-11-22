@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import message.Message;
 /**
  *
- * @author danpan
+ * 
  */
 class ServerConnection implements Runnable {
 

@@ -11,15 +11,15 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author danpan
+ * 
  */
 public class ClientJFrame extends javax.swing.JFrame {
 
     private ServerConnection connection;
   
-    private final ArrayList<String> guessedWord = new ArrayList<String>();
+    //private final ArrayList<String> guessedWord = new ArrayList<String>();
     
-    private boolean isGuessedWord = false;
+    //private boolean isGuessedWord = false;
 
     /**
      * Creates new form ClientJFrame
