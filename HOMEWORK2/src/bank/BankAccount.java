@@ -17,6 +17,6 @@ public interface BankAccount extends Remote{
 
     public void deposit(float value) throws RemoteException;
 
-    public void withdraw(float value) throws RemoteException;
+    public void withdraw(float value) throws RemoteException,RejectedException;
     
 }

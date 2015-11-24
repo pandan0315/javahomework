@@ -30,10 +30,24 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
                 + balance);
 
     }
-    public synchronized void withdraw(float numberOfWithdraw) throws RemoteException{
+    @Override
+    public synchronized void withdraw(float numberOfWithdraw) throws RemoteException,
+                                                                     RejectedException{
 
+       balance -= numberOfWithdraw;
+       System.out.println("Transaction: Account " + name + ": withdraw: $" + numberOfWithdraw + ", balance: $" + balance);
+      
+       /*  if (numberOfWithdraw < 0) {
+            throw new RejectedException("Rejected: Account " + name + ": Illegal value: " + numberOfWithdraw);
+        }
+        if ((balance - numberOfWithdraw) < 0) {
+            throw new RejectedException("Rejected: Account " + name
+                                        + ": Negative balance on withdraw: " + (balance - numberOfWithdraw));
+        }
         balance -= numberOfWithdraw;
-        System.out.println("Transaction: Account " + name + ": withdraw: $" + numberOfWithdraw + ", balance: $" + balance);
-
+        System.out.println("Transaction: Account " + name + ": withdraw: $" + numberOfWithdraw + ", balance: $"
+                           + balance);
+        */
+        
     }
 }

@@ -20,12 +20,12 @@ public class ClientAccountImpl extends UnicastRemoteObject implements ClientAcco
         this.bankaccount=bankaccount;
     }
     @Override
-    public String getUserName() throws RemoteException {
+    public synchronized String getUserName() throws RemoteException {
         return name;
     }
 
     @Override
-    public BankAccount getBankAccount() throws RemoteException {
+    public synchronized BankAccount getBankAccount() throws RemoteException {
         return bankaccount;
     }
 

@@ -14,6 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 import server.ClientAccount;
 import server.Item;
@@ -37,8 +38,17 @@ public class ClientMainJframe extends javax.swing.JFrame {
      * Creates new form ClientMainJframe
      */
     public ClientMainJframe()  {
+        
         initComponents();
-         this.wishList.setModel(listModel);
+        
+       // createBankAccountButton.setEnabled(false);
+        depositButton.setEnabled(false);
+        registerMarketButton.setEnabled(false);
+        sellButton.setEnabled(false);
+        wishButton.setEnabled(false);
+        getAllItemButton.setEnabled(false);
+        buyButton.setEnabled(false);
+        this.wishList.setModel(listModel);
         try{
             clientInterfaceObj=new ClientImpl(this);
             
@@ -314,6 +324,9 @@ public class ClientMainJframe extends javax.swing.JFrame {
             this.bankAccount = bankObj.createAccount(accountNameTextField.getText());
             this.accountNameTextField.setEnabled(false);
             this.createBankAccountButton.setEnabled(false);
+            depositButton.setEnabled(true);
+            registerMarketButton.setEnabled(true);
+            
         } catch (RemoteException | RejectedException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -330,6 +343,12 @@ public class ClientMainJframe extends javax.swing.JFrame {
             this.marketText.append(userNameTextField.getText()+" is successfully registered in the market"+"\n");
             this.registerMarketButton.setEnabled(false);
             this.userNameTextField.setEnabled(false);
+        sellButton.setEnabled(true);
+        wishButton.setEnabled(true);
+        getAllItemButton.setEnabled(true);
+        buyButton.setEnabled(true);
+        
+        //sent client interface reference to server
             this.market.addClientNotifyObject(clientInterfaceObj, client);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
@@ -384,14 +403,22 @@ public class ClientMainJframe extends javax.swing.JFrame {
     }//GEN-LAST:event_getAllItemButtonActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
-        // TODO add your handling code here:
-       Item item=(Item)itemsList.getSelectedValue();
         try {
-            market.buyItem(item,client);
+            // TODO add your handling code here:
+            Item item=(Item)itemsList.getSelectedValue();
+            boolean isSuccessfull;
+            
+            isSuccessfull= market.buyItem(item,client);
+            
+            
+            if (!isSuccessfull){
+                JOptionPane.showMessageDialog(this, "You have not enough money to buy it", "Error", JOptionPane.ERROR_MESSAGE);
+              return;
+            }
+            this.getAllItemButtonActionPerformed(evt);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
-       this.getAllItemButtonActionPerformed(evt);
     }//GEN-LAST:event_buyButtonActionPerformed
 
     /**
@@ -425,6 +452,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientMainJframe().setVisible(true);
+                
+                
             }
         });
     }
