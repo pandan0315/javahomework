@@ -32,39 +32,39 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private MarketService market;
     private ClientAccount client;
     DefaultListModel listModel = new DefaultListModel();
-    private ClientInterface clientInterfaceObj=null;
-    
+    private ClientInterface clientInterfaceObj = null;
+
     /**
      * Creates new form ClientMainJframe
      */
-    public ClientMainJframe()  {
-        
+    public ClientMainJframe() {
+
         initComponents();
-        
-       // createBankAccountButton.setEnabled(false);
+
+        // createBankAccountButton.setEnabled(false);
         depositButton.setEnabled(false);
         registerMarketButton.setEnabled(false);
         sellButton.setEnabled(false);
         wishButton.setEnabled(false);
         getAllItemButton.setEnabled(false);
         buyButton.setEnabled(false);
+        unregisterMarketButton.setEnabled(false);
         this.wishList.setModel(listModel);
-        try{
-            clientInterfaceObj=new ClientImpl(this);
-            
-            try{
-                 LocateRegistry.getRegistry(1099).list();
+        try {
+            clientInterfaceObj = new ClientImpl(this);
+
+            try {
+                LocateRegistry.getRegistry(1099).list();
             } catch (RemoteException e) {
                 LocateRegistry.createRegistry(1099);
             }
-            bankObj = (Bank)Naming.lookup("ICABANK");
-            market = (MarketService)Naming.lookup("BlocketServer");
-        }catch(Exception e){
+            bankObj = (Bank) Naming.lookup("ICABANK");
+            market = (MarketService) Naming.lookup("BlocketServer");
+        } catch (Exception e) {
             System.out.println("The runtime failed: " + e.getMessage());
             System.exit(0);
         }
-        
-        
+
     }
 
     /**
@@ -103,6 +103,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
         marketText = new javax.swing.JTextArea();
         registerMarketButton = new javax.swing.JButton();
         createBankAccountButton = new javax.swing.JButton();
+        unregisterMarketButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -179,6 +180,13 @@ public class ClientMainJframe extends javax.swing.JFrame {
             }
         });
 
+        unregisterMarketButton.setText("unregisterMarketAccount");
+        unregisterMarketButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unregisterMarketButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -192,15 +200,37 @@ public class ClientMainJframe extends javax.swing.JFrame {
                         .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(registerMarketButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 47, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(getAllItemButton)
+                        .addGap(84, 84, 84)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(itemNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(sellButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(wishButton))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(unregisterMarketButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(10, 10, 10))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -215,36 +245,15 @@ public class ClientMainJframe extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(depositButton)
                                     .addComponent(createBankAccountButton)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(itemNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(itemPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addComponent(sellButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(wishButton))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(getAllItemButton)
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(10, 10, 10)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buyButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,9 +275,9 @@ public class ClientMainJframe extends javax.swing.JFrame {
                     .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(registerMarketButton))
-                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(itemNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
@@ -277,10 +286,12 @@ public class ClientMainJframe extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(itemPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(unregisterMarketButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(wishButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sellButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(sellButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(wishButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(1, 1, 1)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -295,60 +306,63 @@ public class ClientMainJframe extends javax.swing.JFrame {
                             .addComponent(getAllItemButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 109, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void createBankAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBankAccountButtonActionPerformed
-        
+
         try {
-            
+
             this.bankAccount = bankObj.createAccount(accountNameTextField.getText());
             this.accountNameTextField.setEnabled(false);
             this.createBankAccountButton.setEnabled(false);
             depositButton.setEnabled(true);
             registerMarketButton.setEnabled(true);
-            
+            unregisterMarketButton.setEnabled(false);
+
         } catch (RemoteException | RejectedException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
-              bankText.append(accountNameTextField.getText()+" is successfully created in ICABANK"+"\n");
-            
-        
+        bankText.append(accountNameTextField.getText() + " is successfully created in ICABANK" + "\n");
+
+
     }//GEN-LAST:event_createBankAccountButtonActionPerformed
 
     private void registerMarketButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerMarketButtonActionPerformed
         try {
             // TODO add your handling code here:
-            this.client=market.register(userNameTextField.getText(), this.bankAccount);
-            
-            this.marketText.append(userNameTextField.getText()+" is successfully registered in the market"+"\n");
+            this.client = market.register(userNameTextField.getText(), this.bankAccount);
+
+            this.marketText.append(userNameTextField.getText() + " is successfully registered in the market" + "\n");
             this.registerMarketButton.setEnabled(false);
-            this.userNameTextField.setEnabled(false);
-        sellButton.setEnabled(true);
-        wishButton.setEnabled(true);
-        getAllItemButton.setEnabled(true);
-        buyButton.setEnabled(true);
-        
-        //sent client interface reference to server
+            //this.userNameTextField.setEnabled(false);
+            sellButton.setEnabled(true);
+            wishButton.setEnabled(true);
+            getAllItemButton.setEnabled(true);
+            buyButton.setEnabled(true);
+            unregisterMarketButton.setEnabled(true);
+
+            //sent client interface reference to server
             this.market.addClientNotifyObject(clientInterfaceObj, client);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
@@ -356,22 +370,22 @@ public class ClientMainJframe extends javax.swing.JFrame {
     }//GEN-LAST:event_registerMarketButtonActionPerformed
 
     private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
-        
+
         try {
             bankAccount.deposit(Float.valueOf(depositTextField.getText()));
-            bankText.append("your account has $"+bankAccount.getBalance()+"\n");
-            
+            bankText.append("your account has $" + bankAccount.getBalance() + "\n");
+
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }//GEN-LAST:event_depositButtonActionPerformed
 
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
         try {
             // TODO add your handling code here:\
             market.sellItem(itemNameTextField.getText(), Float.valueOf(itemPriceTextField.getText()), client);
-            this.marketText.append("your item "+itemNameTextField.getText()+" is in the market now"+"\n");
+            this.marketText.append("your item " + itemNameTextField.getText() + " is in the market now" + "\n");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -382,8 +396,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
             // TODO add your handling code here:
 
             market.wishItem(itemNameTextField.getText(), Float.valueOf(itemPriceTextField.getText()), client);
-           this.marketText.append("your wish item is "+itemNameTextField.getText()+" of $"+itemPriceTextField.getText()+"\n");
-           listModel.addElement(itemNameTextField.getText()+" of $"+itemPriceTextField.getText()+"\n");
+            this.marketText.append("your wish item is " + itemNameTextField.getText() + " of $" + itemPriceTextField.getText() + "\n");
+            listModel.addElement(itemNameTextField.getText() + " of $" + itemPriceTextField.getText() + "\n");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -393,33 +407,47 @@ public class ClientMainJframe extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultListModel itemModel = new DefaultListModel();
         try {
-            for (Item item:market.getAllItem()){
+            for (Item item : market.getAllItem()) {
                 itemModel.addElement(item);
             }
             this.itemsList.setModel(itemModel);
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_getAllItemButtonActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
         try {
             // TODO add your handling code here:
-            Item item=(Item)itemsList.getSelectedValue();
+            Item item = (Item) itemsList.getSelectedValue();
             boolean isSuccessfull;
-            
-            isSuccessfull= market.buyItem(item,client);
-            
-            
-            if (!isSuccessfull){
+
+            isSuccessfull = market.buyItem(item, client);
+
+            if (!isSuccessfull) {
                 JOptionPane.showMessageDialog(this, "You have not enough money to buy it", "Error", JOptionPane.ERROR_MESSAGE);
-              return;
+                return;
             }
             this.getAllItemButtonActionPerformed(evt);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buyButtonActionPerformed
+
+    private void unregisterMarketButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unregisterMarketButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            market.unRegister(userNameTextField.getText());
+            registerMarketButton.setEnabled(true);
+            sellButton.setEnabled(false);
+            wishButton.setEnabled(false);
+            getAllItemButton.setEnabled(false);
+            buyButton.setEnabled(false);
+            this.marketText.append(userNameTextField.getText() + " is successfully unregistered in the market" + "\n");
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_unregisterMarketButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -452,17 +480,16 @@ public class ClientMainJframe extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClientMainJframe().setVisible(true);
-                
-                
+
             }
         });
     }
 
-    public void addMessage(String message){
+    public void addMessage(String message) {
         marketText.append(message + "\n");
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accountNameTextField;
     private javax.swing.JTextArea bankText;
@@ -488,6 +515,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private javax.swing.JTextArea marketText;
     private javax.swing.JButton registerMarketButton;
     private javax.swing.JButton sellButton;
+    private javax.swing.JButton unregisterMarketButton;
     private javax.swing.JTextField userNameTextField;
     private javax.swing.JButton wishButton;
     private javax.swing.JList wishList;

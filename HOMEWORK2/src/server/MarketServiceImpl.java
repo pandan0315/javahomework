@@ -23,11 +23,11 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     private Hashtable<String, ClientInterface> notifiableClientTable = new Hashtable<String, ClientInterface>();
     
     private String marketName = null;
-    private serverMain marketServer;
+    private ServerMain marketServer;
     
  
     
-    public MarketServiceImpl(serverMain server, String marketName) throws RemoteException {
+    public MarketServiceImpl(ServerMain server, String marketName) throws RemoteException {
         super();
         this.marketName = marketName;
         this.marketServer= server;

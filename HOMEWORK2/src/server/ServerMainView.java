@@ -13,18 +13,18 @@ import javax.swing.JList;
  *
  * @author danpan
  */
-public class serverMainView extends javax.swing.JFrame {
+public class ServerMainView extends javax.swing.JFrame {
 
     /**
      * Creates new form serverMainView
      */
     
-    private serverMain mainServer = null;
+    private ServerMain mainServer = null;
     //private ArrayList<ClientAccount> clientsList=new ArrayList<>();
     //private ArrayList<Item> itemsList=new ArrayList<>();
     //private DefaultListModel clientModel;
     
-    public serverMainView(serverMain server) {
+    public ServerMainView(ServerMain server) {
         mainServer=server;
         initComponents();
         //clientModel = new DefaultListModel();

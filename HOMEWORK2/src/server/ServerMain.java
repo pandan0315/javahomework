@@ -17,13 +17,13 @@ import java.rmi.registry.LocateRegistry;
  *
  * @author danpan
  */
-public class serverMain {
+public class ServerMain {
     
     private MarketService service;
     private Bank bank;
-    private serverMainView view;
+    private ServerMainView view;
     
-    public serverMain(){
+    public ServerMain(){
         try{
         service = new MarketServiceImpl(this,"Blocket");
         bank = new BankImpl();
@@ -53,7 +53,7 @@ public class serverMain {
         
     }
     
-    public serverMainView getMainView(){
+    public ServerMainView getMainView(){
         return view;
         
     }
@@ -62,13 +62,13 @@ public class serverMain {
         return service;
     }
      public static void main(String args[]) {
-         new serverMain();
+         new ServerMain();
        
        
     }
      
      private void createGUI(){
-         view=new serverMainView(this);
+         view=new ServerMainView(this);
         view.setVisible(true);
      }
     
