@@ -5,6 +5,7 @@ import clientmain.ClientInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface MarketService extends Remote{
     public void wishItem(String itemName,float price,ClientAccount buyerAccount) throws RemoteException;
     public List<Item> getAllItem( ) throws RemoteException;
     public void addClientNotifyObject(ClientInterface clientObj, ClientAccount client) throws RemoteException;
+    public Hashtable<String, ClientInterface> getNotifiableClientTable() throws RemoteException;
 }

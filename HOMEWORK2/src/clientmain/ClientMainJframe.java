@@ -11,6 +11,7 @@ import bank.RejectedException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -444,6 +445,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             getAllItemButton.setEnabled(false);
             buyButton.setEnabled(false);
             this.marketText.append(userNameTextField.getText() + " is successfully unregistered in the market" + "\n");
+           
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -9,6 +9,7 @@ import clientmain.ClientInterface;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,13 +54,31 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
 
     @Override
     public synchronized void unRegister(String name) throws RemoteException {
+
+        Iterator<Item> iter = itemList.iterator();
+
+        while (iter.hasNext()) {
+            Item existItem = iter.next();
+
+            if (existItem.getOwner().equals(name)) {
+                iter.remove();
+            }
+        }
+
+       
+        
         for (ClientAccount registerClient : clientAccountsList) {
             if (registerClient.getUserName().equals(name)) {
                 clientAccountsList.remove(registerClient);
+                
+                
                 break;
             }
 
         }
+        notifiableClientTable.remove(name);
+       
+        
         marketServer.getMainView().updateGUI();
 
     }
@@ -135,7 +154,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     }
 
     @Override
-    public synchronized List<Item> getAllItem() throws RemoteException {
+    public synchronized ArrayList<Item> getAllItem() throws RemoteException {
 
         return itemList;
 
@@ -156,10 +175,18 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
         notifiableClientTable.put(client.getUserName(), clientInterfaceObj);
     }
 
-    public synchronized ArrayList<ClientAccount>getAllClients(){
+    public synchronized ArrayList<ClientAccount>getAllClients() throws RemoteException {
         
        return clientAccountsList;
     }
     
+    /**
+     *
+     * @return
+     */
+    
+    public synchronized Hashtable<String, ClientInterface> getNotifiableClientTable()throws RemoteException{
+        return notifiableClientTable;
+    }
     
 }
