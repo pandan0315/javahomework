@@ -34,6 +34,7 @@ public class ServerMain {
             } catch (RemoteException e) {
                 LocateRegistry.createRegistry(1099);
             }
+       
        Naming.rebind("ICABANK", bank);
        Naming.rebind("BlocketServer", service);
         }catch(Exception e){

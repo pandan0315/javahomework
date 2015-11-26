@@ -8,6 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by danpan on 22/11/15.
  */
+
 public class ClientAccountImpl extends UnicastRemoteObject implements ClientAccount {
 
     private String name;

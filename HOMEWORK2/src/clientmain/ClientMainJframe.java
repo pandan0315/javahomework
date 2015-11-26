@@ -11,6 +11,7 @@ import bank.RejectedException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +33,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private Bank bankObj;
     private MarketService market;
     private ClientAccount client;
-    DefaultListModel listModel = new DefaultListModel();
+    //DefaultListModel wishItemModel=new DefaultListModel();
+    //DefaultListModel listModel = new DefaultListModel();
     private ClientInterface clientInterfaceObj = null;
-
+    DefaultListModel itemModel = new DefaultListModel();
+    DefaultListModel itemModel1 = new DefaultListModel();
     /**
      * Creates new form ClientMainJframe
      */
@@ -50,7 +53,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
         getAllItemButton.setEnabled(false);
         buyButton.setEnabled(false);
         unregisterMarketButton.setEnabled(false);
-        this.wishList.setModel(listModel);
+        this.getClientWishButton.setEnabled(false);
+        this.removeWishButton.setEnabled(false);
+        
+        
+       //this.wishList.setModel(listModel);
         try {
             clientInterfaceObj = new ClientImpl(this);
 
@@ -99,12 +106,13 @@ public class ClientMainJframe extends javax.swing.JFrame {
         sellButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         wishList = new javax.swing.JList();
-        jLabel7 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         marketText = new javax.swing.JTextArea();
         registerMarketButton = new javax.swing.JButton();
         createBankAccountButton = new javax.swing.JButton();
         unregisterMarketButton = new javax.swing.JButton();
+        getClientWishButton = new javax.swing.JButton();
+        removeWishButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,8 +169,6 @@ public class ClientMainJframe extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(wishList);
 
-        jLabel7.setText("My wish list:");
-
         marketText.setColumns(20);
         marketText.setRows(5);
         jScrollPane4.setViewportView(marketText);
@@ -188,6 +194,20 @@ public class ClientMainJframe extends javax.swing.JFrame {
             }
         });
 
+        getClientWishButton.setText("My wish list:");
+        getClientWishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getClientWishButtonActionPerformed(evt);
+            }
+        });
+
+        removeWishButton.setText("RemoveWish");
+        removeWishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeWishButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -201,18 +221,13 @@ public class ClientMainJframe extends javax.swing.JFrame {
                         .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(registerMarketButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 47, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(getAllItemButton)
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,7 +243,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
                                 .addComponent(wishButton))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(unregisterMarketButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(10, 10, 10))))
+                                .addGap(16, 16, 16))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,13 +263,20 @@ public class ClientMainJframe extends javax.swing.JFrame {
                                     .addComponent(createBankAccountButton)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buyButton))
+                                    .addComponent(getAllItemButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buyButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(getClientWishButton)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(removeWishButton)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,16 +320,17 @@ public class ClientMainJframe extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(getClientWishButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(getAllItemButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(removeWishButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -324,7 +347,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -362,6 +385,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
             getAllItemButton.setEnabled(true);
             buyButton.setEnabled(true);
             unregisterMarketButton.setEnabled(true);
+            this.getClientWishButton.setEnabled(true);
+            this.removeWishButton.setEnabled(true);
 
             //sent client interface reference to server
             this.market.addClientNotifyObject(clientInterfaceObj, client);
@@ -396,9 +421,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
 
-            market.wishItem(itemNameTextField.getText(), Float.valueOf(itemPriceTextField.getText()), client);
+            Item wishedItem=market.wishItem(itemNameTextField.getText(), Float.valueOf(itemPriceTextField.getText()), client);
             this.marketText.append("your wish item is " + itemNameTextField.getText() + " of $" + itemPriceTextField.getText() + "\n");
-            listModel.addElement(itemNameTextField.getText() + " of $" + itemPriceTextField.getText() + "\n");
+            //listModel.addElement(itemNameTextField.getText() + " of $" + itemPriceTextField.getText() + "\n");
+            //listModel.addElement(wishedItem);
+            
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -406,7 +433,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
 
     private void getAllItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllItemButtonActionPerformed
         // TODO add your handling code here:
-        DefaultListModel itemModel = new DefaultListModel();
+       itemModel.removeAllElements();
         try {
             for (Item item : market.getAllItem()) {
                 itemModel.addElement(item);
@@ -421,6 +448,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             Item item = (Item) itemsList.getSelectedValue();
+           
+          
             boolean isSuccessfull;
 
             isSuccessfull = market.buyItem(item, client);
@@ -430,6 +459,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
                 return;
             }
             this.getAllItemButtonActionPerformed(evt);
+            
+           
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -444,12 +475,51 @@ public class ClientMainJframe extends javax.swing.JFrame {
             wishButton.setEnabled(false);
             getAllItemButton.setEnabled(false);
             buyButton.setEnabled(false);
+            this.getClientWishButton.setEnabled(false);
+            this.removeWishButton.setEnabled(false);
             this.marketText.append(userNameTextField.getText() + " is successfully unregistered in the market" + "\n");
+            itemModel.removeAllElements();
+            this.itemsList.setModel(itemModel);
+            itemModel1.removeAllElements();
+            this.wishList.setModel(itemModel1);
            
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_unregisterMarketButtonActionPerformed
+
+    private void getClientWishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getClientWishButtonActionPerformed
+        itemModel1.removeAllElements();
+        
+        try {
+            for (Item item : market.getAllWishItem()) {
+                if(item.getOwner().equals(client.getUserName())){
+                itemModel1.addElement(item);}
+            }
+            this.wishList.setModel(itemModel1);
+        } catch (Exception e) {
+
+        }
+        
+        
+    }//GEN-LAST:event_getClientWishButtonActionPerformed
+
+    private void removeWishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeWishButtonActionPerformed
+        // TODO add your handling code here:
+        Item itemWished= (Item)wishList.getSelectedValue();
+        
+       
+        try {
+            //boolean isRemove=this.market.updateWishItemList(itemWished);
+            //System.out.println(isRemove);
+            this.market.updateWishItemList(itemWished);
+            this.getClientWishButtonActionPerformed(evt);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_removeWishButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,6 +570,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private javax.swing.JButton depositButton;
     private javax.swing.JTextField depositTextField;
     private javax.swing.JButton getAllItemButton;
+    private javax.swing.JButton getClientWishButton;
     private javax.swing.JTextField itemNameTextField;
     private javax.swing.JTextField itemPriceTextField;
     private javax.swing.JList itemsList;
@@ -508,7 +579,6 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -516,6 +586,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea marketText;
     private javax.swing.JButton registerMarketButton;
+    private javax.swing.JButton removeWishButton;
     private javax.swing.JButton sellButton;
     private javax.swing.JButton unregisterMarketButton;
     private javax.swing.JTextField userNameTextField;

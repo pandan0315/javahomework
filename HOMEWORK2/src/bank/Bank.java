@@ -16,7 +16,7 @@ public interface Bank extends Remote{
 
     /**
   
-     */
+    */
     public BankAccount createAccount(String name) throws RemoteException,RejectedException;
     
     
