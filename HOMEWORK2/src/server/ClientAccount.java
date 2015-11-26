@@ -1,19 +1,28 @@
 package server;
 
 import bank.BankAccount;
-
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.io.Serializable;
 
 /**
  * Created by danpan on 22/11/15.
  */
-public interface ClientAccount extends Remote {
 
-    public String getUserName() throws RemoteException;
+public class ClientAccount implements Serializable {
 
-    public BankAccount getBankAccount()throws RemoteException;
+    private String name;
+    private BankAccount bankaccount;
 
+    public ClientAccount(String name, BankAccount bankaccount) {
+        this.name = name;
+        this.bankaccount = bankaccount;
+    }
 
+    public synchronized String getUserName() {
+        return name;
+    }
+
+    public synchronized BankAccount getBankAccount() {
+        return bankaccount;
+    }
 
 }

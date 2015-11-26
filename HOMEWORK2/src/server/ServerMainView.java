@@ -5,9 +5,9 @@
  */
 package server;
 
-import java.util.ArrayList;
+
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
+
 
 /**
  *
@@ -20,15 +20,12 @@ public class ServerMainView extends javax.swing.JFrame {
      */
     
     private ServerMain mainServer = null;
-    //private ArrayList<ClientAccount> clientsList=new ArrayList<>();
-    //private ArrayList<Item> itemsList=new ArrayList<>();
-    //private DefaultListModel clientModel;
+    
     
     public ServerMainView(ServerMain server) {
         mainServer=server;
         initComponents();
-        //clientModel = new DefaultListModel();
-        
+       
         updateGUI();
         
     

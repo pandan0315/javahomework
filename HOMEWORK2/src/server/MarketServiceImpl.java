@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by danpan on 22/11/15.
+ * 
  */
 public class MarketServiceImpl extends UnicastRemoteObject implements MarketService {
 
@@ -45,7 +45,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
             // If it is not registered then register it
             
         }
-        ClientAccountImpl account = new ClientAccountImpl(name, bankAccount);
+        ClientAccount account = new ClientAccount(name, bankAccount);
          clientAccountsList.add(account);
          marketServer.getMainView().updateGUI();
         return account;
@@ -186,7 +186,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
 
     @Override
     public synchronized void addClientNotifyObject(ClientInterface clientInterfaceObj, ClientAccount client) throws RemoteException {
-        //
+      
          Enumeration<String> clientNames = notifiableClientTable.keys();
          while(clientNames.hasMoreElements()){
              String name = clientNames.nextElement();
@@ -206,7 +206,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     
     /**
      *
-     * @return
+     *
      */
     
     public synchronized Hashtable<String, ClientInterface> getNotifiableClientTable()throws RemoteException{

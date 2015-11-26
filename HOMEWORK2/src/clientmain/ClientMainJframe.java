@@ -11,8 +11,7 @@ import bank.RejectedException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -21,7 +20,7 @@ import javax.swing.JOptionPane;
 import server.ClientAccount;
 import server.Item;
 import server.MarketService;
-import server.MarketServiceImpl;
+
 
 /**
  *
@@ -479,10 +478,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
             this.removeWishButton.setEnabled(false);
             this.marketText.append(userNameTextField.getText() + " is successfully unregistered in the market" + "\n");
             itemModel.removeAllElements();
-            this.itemsList.setModel(itemModel);
             itemModel1.removeAllElements();
-            this.wishList.setModel(itemModel1);
-           
+            this.unregisterMarketButton.setEnabled(false);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
