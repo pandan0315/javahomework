@@ -39,6 +39,15 @@ public class BankImpl extends UnicastRemoteObject implements Bank {
 
     }
 
+    @Override
+    public BankAccount getAccount(String name) throws RemoteException {
+        
+        return accounts.get(name);
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
+    }
+
     
 }
 

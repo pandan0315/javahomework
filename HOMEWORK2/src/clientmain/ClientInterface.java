@@ -12,7 +12,8 @@ import java.rmi.RemoteException;
  *
  * @author danpan
  */
-public interface ClientInterface extends Remote {
+//remote client interface allows server to call back a client
+public interface ClientInterface extends Remote { 
     
     //notify client wishitem is available
     public void notifyItemAvailable(String itemName, float itemPrice) throws RemoteException;

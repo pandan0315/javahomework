@@ -27,7 +27,7 @@ public class ServerMain {
             service = new MarketServiceImpl(this, "Blocket");
             bank = new BankImpl();
 
-            //rmi registry
+            //Binding a name to a remote object reference at the RMI registry
             try {
                 LocateRegistry.getRegistry(1099).list();
             } catch (RemoteException e) {

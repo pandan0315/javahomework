@@ -120,7 +120,7 @@ public class ServerMainView extends javax.swing.JFrame {
          DefaultListModel itemModel = new DefaultListModel();
         try {
             for (Item item:((MarketServiceImpl)(this.mainServer.getServer())).getAllItem()){
-                itemModel.addElement(item.getItemName());
+                itemModel.addElement(item);
             }
             this.itemList.setModel(itemModel);
         }catch(Exception e){
