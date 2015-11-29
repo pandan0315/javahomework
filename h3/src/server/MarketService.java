@@ -18,7 +18,7 @@ import java.util.List;
 //remote server interface allows clients to register ,unregister ....
 public interface MarketService extends Remote{
   
-    public ClientAccount register(String name, BankAccount bankAccount) throws RemoteException;
+    public ClientAccount register(String name, char[] password,BankAccount bankAccount) throws RemoteException;
     public void unRegister(String name) throws RemoteException;
     
     public void sellItem(String itemName,float price,ClientAccount sellerAccount) throws RemoteException;

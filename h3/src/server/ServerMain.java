@@ -11,6 +11,9 @@ import bank.BankImpl;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +24,16 @@ public class ServerMain {
     private MarketService service;
     private Bank bank;
     private ServerMainView view;
+    private DataHandler dataHandler;
+    
+    
+    
+    
     public ServerMain() {
+        
+        
+       
+        
         try {
             service = new MarketServiceImpl(this, "Blocket");
             bank = new BankImpl();
@@ -39,6 +51,27 @@ public class ServerMain {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+        
+             dataHandler = new DataHandler();
+        
+        try {
+            dataHandler.getConnection();
+            ((BankImpl)bank).getDataHandler(dataHandler);
+            ((MarketServiceImpl)service).getDataHandler(dataHandler);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+            
+            try {
+                this.dataHandler.createBankAccountTable();
+                this.dataHandler.createClientAccountTable();
+                this.dataHandler.createItemTable();
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
 
         /* Create and display the GUI*/
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -49,6 +82,9 @@ public class ServerMain {
 
             }
         });
+        
+        
+        
 
     }
 
@@ -70,5 +106,9 @@ public class ServerMain {
         view = new ServerMainView(this);
         view.setVisible(true);
     }
+    
+    
+    
+    
 
 }

@@ -112,6 +112,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
         unregisterMarketButton = new javax.swing.JButton();
         getClientWishButton = new javax.swing.JButton();
         removeWishButton = new javax.swing.JButton();
+        getBankAccountButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -207,6 +208,13 @@ public class ClientMainJframe extends javax.swing.JFrame {
             }
         });
 
+        getBankAccountButton.setText("getBankAccount");
+        getBankAccountButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getBankAccountButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -240,52 +248,55 @@ public class ClientMainJframe extends javax.swing.JFrame {
                                 .addComponent(sellButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(wishButton))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(unregisterMarketButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(16, 16, 16))))
+                            .addComponent(unregisterMarketButton, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(accountNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(depositTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(depositButton)
-                                    .addComponent(createBankAccountButton)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(accountNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(buyButton))
-                                    .addComponent(getAllItemButton))
+                                .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(getClientWishButton)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(removeWishButton)))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(depositTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(depositButton)
+                            .addComponent(createBankAccountButton)
+                            .addComponent(getBankAccountButton)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buyButton))
+                            .addComponent(getAllItemButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(getClientWishButton)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(removeWishButton)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(accountNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(createBankAccountButton))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(accountNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(createBankAccountButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(getBankAccountButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
@@ -359,8 +370,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
 
             this.bankAccount = bankObj.createAccount(accountNameTextField.getText());
             //bankText.append(accountNameTextField.getText() + " is successfully created in ICABANK" + "\n");
-            this.accountNameTextField.setEnabled(false);
-            this.createBankAccountButton.setEnabled(false);
+            //this.accountNameTextField.setEnabled(false);
+           // this.createBankAccountButton.setEnabled(false);
           // this.getBankAccountButton.setEnabled(false);
             depositButton.setEnabled(true);
             registerMarketButton.setEnabled(true);
@@ -404,9 +415,13 @@ public class ClientMainJframe extends javax.swing.JFrame {
 
         try {
             bankAccount.deposit(Float.valueOf(depositTextField.getText()));
-            bankText.append("your account has $" + bankAccount.getBalance() + "\n");
+            bankText.append(bankAccount.getName()+":your account has $" + bankAccount.getBalance() + "\n");
+            registerMarketButton.setEnabled(true);
+            unregisterMarketButton.setEnabled(false);
 
         } catch (RemoteException ex) {
+            Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RejectedException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -524,6 +539,20 @@ public class ClientMainJframe extends javax.swing.JFrame {
         
     }//GEN-LAST:event_removeWishButtonActionPerformed
 
+    private void getBankAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getBankAccountButtonActionPerformed
+        try {
+            // TODO add your handling code here:;
+            this.bankAccount=this.bankObj.getAccount(this.accountNameTextField.getText());
+            this.depositButton.setEnabled(true);
+        } catch (RemoteException ex) {
+            
+            Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(bankAccount==null){
+             JOptionPane.showMessageDialog(this, "Account does not exist , please create a new one", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_getBankAccountButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -573,6 +602,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private javax.swing.JButton depositButton;
     private javax.swing.JTextField depositTextField;
     private javax.swing.JButton getAllItemButton;
+    private javax.swing.JButton getBankAccountButton;
     private javax.swing.JButton getClientWishButton;
     private javax.swing.JTextField itemNameTextField;
     private javax.swing.JTextField itemPriceTextField;

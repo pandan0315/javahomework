@@ -4,3 +4,6 @@ h1/ClientApp/build/*
 /h1/mesProcess/build/
 /h1/Message/dist/
 /h1/ServerApp/dist/
+/h3/build/
+/h3/nbproject/private/
+/h3/dist/
