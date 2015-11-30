@@ -35,17 +35,20 @@ public class BankImpl extends UnicastRemoteObject implements Bank {
        BankAccountImpl account = (BankAccountImpl) accounts.get(name);
        
         if (account != null) {
-            System.out.println("Account [" + name + "] exists!!!");
-            throw new RejectedException("Rejected: Bank: " + bankName
-                    + " Account for: " + name + " already exists: " + account);
+            return null;
+           // System.out.println("Account [" + name + "] exists!!!");
+            //throw new RejectedException("Rejected: Bank: " + bankName
+             //       + " Account for: " + name + " already exists: " + account);
         }
         account = this.dataHandler.getBankAccountByname(name);
          if (account != null){
              
             this.accounts.put(name, account);
-            System.out.println("Account [" + name + "] exists!!!");
-            throw new RejectedException("Rejected: Bank: " + bankName
-                    + " Account for: " + name + " already exists: " + account);
+              return null;
+           // System.out.println("Account [" + name + "] exists!!!");
+           // throw new RejectedException("Rejected: Bank: " + bankName
+            //        + " Account for: " + name + " already exists: " + account);
+          
          }
         try {
             this.dataHandler.storeBankAccount(name);
@@ -70,7 +73,7 @@ public class BankImpl extends UnicastRemoteObject implements Bank {
     }
 
     @Override
-    public BankAccount getAccount(String name) throws RemoteException {
+    public synchronized BankAccount getAccount(String name) throws RemoteException {
         
          BankAccount acct = accounts.get(name);
         if (acct == null) {

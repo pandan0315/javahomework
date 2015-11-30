@@ -67,12 +67,15 @@ public class ServerMain {
                 this.dataHandler.createBankAccountTable();
                 this.dataHandler.createClientAccountTable();
                 this.dataHandler.createItemTable();
+                this.dataHandler.createWishTable();
             } catch (SQLException ex) {
                 Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         
-
+        ((MarketServiceImpl)service).setClientTable();
+         ((MarketServiceImpl)service).setItemTable();
+         
         /* Create and display the GUI*/
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override

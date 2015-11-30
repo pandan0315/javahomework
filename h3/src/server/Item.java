@@ -1,6 +1,7 @@
 package server;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 /**
@@ -12,7 +13,10 @@ public class Item implements Serializable {
     private final String name;
     private final float price;
     private final String owner;
+    private String buyer=null;
     private final UUID itemID;
+     private ItemState state = ItemState.OnSell;
+    private String wisher;
 
     public Item(String name, float price, String owner) {
         this.name = name;
@@ -21,7 +25,18 @@ public class Item implements Serializable {
         this.itemID = UUID.randomUUID();
 
     }
+    
+    public Item(String name, float price,String seller, String buyer, UUID itemID, ItemState state) {
+        
+        this.name = name;
+        this.price = price;  
+        this.owner = seller;
+        this.buyer= buyer;
+        this.itemID = itemID;
+        this.state = state;
+    }
 
+    
     public String getItemName() {
         return name;
     }
@@ -38,7 +53,16 @@ public class Item implements Serializable {
         return itemID;
 
     }
+    public ItemState getState(){
+        return this.state;
+    }
 
+    public void setSold() {
+        this.state = ItemState.Sold;
+    }
+    public void setBuyer(String buyer){
+        this.buyer=buyer;
+    }
     @Override
     public String toString() {
 

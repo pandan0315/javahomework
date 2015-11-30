@@ -57,7 +57,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
 
         boolean success = false;
         try {
-            balance += value;//
+            balance += value;
             updateStatement.setFloat(1, balance);
             int rows = updateStatement.executeUpdate();
             if (rows != 1) {
@@ -101,7 +101,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
             } else {
                 success = true;
             }
-            System.out.println("Transaction: Account " + name + ": deposit: $"
+            System.out.println("Transaction: Account " + name + ": withdraw: $"
                                        + value + ", balance: $" + balance);
         } catch (SQLException sqle) {
             throw new RejectedException("Unable to deposit into account: " + name, sqle);

@@ -6,6 +6,10 @@
 package server;
 
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.UUID;
 import javax.swing.DefaultListModel;
 
 
@@ -112,18 +116,25 @@ public class ServerMainView extends javax.swing.JFrame {
         
         DefaultListModel clientModel = new DefaultListModel();
         try {
-        for (ClientAccount c : ((MarketServiceImpl)(this.mainServer.getServer())).getAllClients()) {
-            clientModel.addElement(c.getUserName());
-            
-        }
+
+            HashMap<String, ClientAccount> clientTable=((MarketServiceImpl)(this.mainServer.getServer())).getAllClients();   
+            for(ClientAccount value:clientTable.values()){
+                clientModel.addElement(value);
+                
+            }
         this.clientList.setModel(clientModel);
+        
         } catch (Exception e) {
             
         }
          DefaultListModel itemModel = new DefaultListModel();
         try {
-            for (Item item:((MarketServiceImpl)(this.mainServer.getServer())).getAllItem()){
-                itemModel.addElement(item);
+            
+            HashMap<UUID,Item> itemTable=((MarketServiceImpl)(this.mainServer.getServer())).getAllItem();
+            
+            for(Item value:itemTable.values()){
+            
+                itemModel.addElement(value);
             }
             this.itemList.setModel(itemModel);
         }catch(Exception e){

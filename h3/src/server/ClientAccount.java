@@ -25,6 +25,13 @@ public class ClientAccount implements Serializable {
         this.bankaccount=bankAccount;
     }
 
+   @Override
+    public String toString() {
+
+        return name;
+    }
+  
+
     public synchronized String getUserName() {
         return name;
     }
