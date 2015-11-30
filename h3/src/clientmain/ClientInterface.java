@@ -20,6 +20,8 @@ public interface ClientInterface extends Remote {
     
     //notify client his item is sold
     
-    public void notifyItemSoldout(String itemName, float itemPrice) throws RemoteException;
+    public void notifyItemSoldout(String itemName, float itemPrice, float balance) throws RemoteException;
+    
+    public void notifyItemBought(String itemName, float itemPrice, float balance) throws RemoteException;
     
 }

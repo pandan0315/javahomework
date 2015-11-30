@@ -94,16 +94,17 @@ public class DataHandler {
             
             char[] password = account.getPassword();
             String passwordStr = new String(password);
-            MessageDigest md = MessageDigest.getInstance("SHA");
-            String digestedString = new String(md.digest(passwordStr.getBytes()));
+            //MessageDigest md = MessageDigest.getInstance("SHA");
+           // String digestedString = new String(md.digest(passwordStr.getBytes()));
             
-            stmt.setString(2, digestedString);
+           // stmt.setString(2, digestedString);
+            stmt.setString(2, passwordStr);
             stmt.setString(3, account.getBankAccount().getName());
             // Execute and update the data
             stmt.executeUpdate();
             stmt.close();
             // TODO: need implementation here
-        } catch (NoSuchAlgorithmException | SQLException ex) {
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
@@ -189,7 +190,7 @@ public class DataHandler {
         
         return allClient;
     }
-    public ClientAccount getClientAccountByNameAndPassword(String name, char[] password) throws RemoteException, RejectedException {
+     public ClientAccount getClientAccountByNameAndPassword(String name, char[] password) throws RemoteException, RejectedException {
         
         try {
             // Prepate the statement with SQL update command
@@ -197,9 +198,10 @@ public class DataHandler {
                     " WHERE (username = ? AND password = ?)");
             stmt.setString(1, name);
             String passwordStr = new String(password);
-            MessageDigest md = MessageDigest.getInstance("SHA");
-            String digestedString = new String(md.digest(passwordStr.getBytes()));
-            stmt.setString(2, digestedString);
+           // MessageDigest md = MessageDigest.getInstance("SHA");
+            //String digestedString = new String(md.digest(passwordStr.getBytes()));
+            //stmt.setString(2, digestedString);
+            stmt.setString(2, passwordStr);
             ResultSet rs = stmt.executeQuery();
             
             // Create the client account object and return it
@@ -213,15 +215,13 @@ public class DataHandler {
             }
         }  catch (SQLException ex) {
             System.err.println(ex.getMessage());
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
        
     }
 
     public HashMap<UUID,Item> getAllItem() {
-        HashMap<UUID,Item> items = new HashMap<UUID,Item>();
+        HashMap<UUID,Item> items = new HashMap<>();
         try {
             PreparedStatement stmt;
             // Prepate the statement with SQL update command
@@ -276,9 +276,9 @@ public class DataHandler {
         
     }
 
-    public ArrayList<WishItem> getMatchedWishItems(Item itemForSell) {
+    public WishItem getMatchedWishItem(Item itemForSell) {
         
-       ArrayList<WishItem> items = new ArrayList<>();
+       WishItem item =null;
         try {
             // Prepate the statement with SQL update command
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM market.wishes WHERE (" +
@@ -288,17 +288,17 @@ public class DataHandler {
             ResultSet rs = stmt.executeQuery();
             //stmt.close();
             while (rs.next()) {
-                String wisher = rs.getString("onwer");
+                String wisher = rs.getString("owner");
                 float price = rs.getFloat("price");
                  // Create the item object and return it
-                items.add(new WishItem(itemForSell.getItemName(), price, wisher));
-                
+                item=new WishItem(itemForSell.getItemName(), price, wisher);
+                if(item!=null){break;}
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         
-        return items;
+        return item;
         
         
     }
@@ -358,8 +358,8 @@ public class DataHandler {
                     "state = ?, buyer = ? WHERE itemid = ?");         
             // Prepare for the state
             stmt.setString(1, item.getState().toString());
-            if (null != item.getOwner()) {
-                stmt.setString(2, item.getOwner());
+            if (null != item.getBuyer()) {
+                stmt.setString(2, item.getBuyer());
             }
             stmt.setString(3, item.getItemID().toString());
             
@@ -370,7 +370,101 @@ public class DataHandler {
             System.err.println(ex.getMessage());
         }
     }
+
+    public void removeWishItem(WishItem item) {
+        try {
+            // Prepate the statement with SQL update command
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM market.wishes WHERE " + 
+                    "name = ?");
+            stmt.setString(1, item.getWishItemName());
+            // Execute the delete action
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public void removeClient(String name, char[] password) throws RemoteException, RejectedException {
+        ClientAccount client = this.getClientAccountByNameAndPassword(name, password);
+        if(client!=null){
+        try {
+            // Prepate the statement with SQL update command
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM market.clientaccounts WHERE " + 
+                    "username = ?");
+            stmt.setString(1, client.getUserName());
+            // Execute the delete action
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        }
     
+    }
+
+    public void removeItems(String name) {
+        try {
+            // Prepate the statement with SQL update command
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM market.items WHERE " + 
+                    "owner = ?");
+            stmt.setString(1, name);
+            // Execute the delete action
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+        
+   public void removeAllWishItem(String name){
+       try {
+            // Prepate the statement with SQL update command
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM market.wishes WHERE " + 
+                    "owner = ?");
+            stmt.setString(1, name);
+            // Execute the delete action
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+       
+   }
+
+    public int getBoughtAmount(String name) {
+        
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(*) AS total FROM market.items WHERE (" +
+                    "buyer = ? AND state = 'Sold')");
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+            return rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+        
+    }
+
+    public int getSelledAmount(String userName) {
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(*) AS total FROM market.items WHERE (" +
+                    "owner = ? AND state = 'Sold')");
+            stmt.setString(1, userName);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+            return rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
 
   

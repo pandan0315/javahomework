@@ -4,7 +4,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by danpan on 21/11/15.
@@ -14,6 +17,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
     private float balance = 0;
     private String name;
     private PreparedStatement updateStatement;
+    private PreparedStatement queryStatement;
     
 
     public BankAccountImpl(String name, float balance,Connection conn) throws RemoteException, RejectedException{
@@ -25,6 +29,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
                                                                   + "market.bankaccounts"
                                                           + " SET balance = ? WHERE name= ? ");
             updateStatement.setString(2, name);
+            queryStatement = conn.prepareStatement("SELECT balance FROM market.bankaccounts WHERE name = '" + name + "'");
         } catch (SQLException sqle) {
             throw new RejectedException("Unable to instantiate account", sqle);
         }
@@ -44,6 +49,18 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
         return balance;
     }
     
+    private float getBalanceFromDB() {
+        try {
+            ResultSet rs = queryStatement.executeQuery();
+            while(rs.next()){
+                return rs.getFloat("balance");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankAccountImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
     
 
     @Override
@@ -54,7 +71,8 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
             throw new RejectedException("Rejected: Account " + name
                                                 + ": Illegal value: " + value);
         }
-
+        
+        balance = this.getBalanceFromDB();
         boolean success = false;
         try {
             balance += value;
@@ -84,7 +102,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
             throw new RejectedException("Rejected: Account " + name
                                                 + ": Illegal value: " + value);
         }
-
+        balance = this.getBalanceFromDB();
         if ((balance - value) < 0) {
             throw new RejectedException("Rejected: Account " + name
                                                 + ": Negative balance on withdraw: "
@@ -94,7 +112,7 @@ public class BankAccountImpl extends UnicastRemoteObject implements BankAccount 
         boolean success = false;
         try {
             balance -= value;
-            updateStatement.setDouble(1, balance);
+            updateStatement.setFloat(1, balance);
             int rows = updateStatement.executeUpdate();
             if (rows != 1) {
                 throw new RejectedException("Unable to deposit into account: " + name);

@@ -32,4 +32,10 @@ public class WishItem implements Serializable{
     public String getWisher(){
         return this.wisher;
     }
+    
+    @Override
+    public String toString() {
+
+        return name + " : " + price;
+    }
 }

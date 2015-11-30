@@ -27,8 +27,14 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface{
     }
 
     @Override
-    public synchronized void notifyItemSoldout(String itemName, float itemPrice) throws RemoteException {
-        clientGui.addMessage("your item "+itemName+" has been sold in $ "+itemPrice);
+    public synchronized void notifyItemSoldout(String itemName, float itemPrice,float balance) throws RemoteException {
+        clientGui.addMessage("your item "+itemName+" has been sold in $ "+itemPrice+".Your has "+balance+" left."+"\n");
+        
+    }
+    
+    @Override
+    public synchronized void notifyItemBought(String itemName, float itemPrice,float balance) throws RemoteException {
+        clientGui.addMessage("your bought "+itemName+" in $ "+itemPrice+".Your has "+balance+" left."+"\n");
         
     }
     

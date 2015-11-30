@@ -33,17 +33,11 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     private ServerMain marketServer;
     private DataHandler dataHandler = null;
 
-    public void setClientTable() {
-        this.clientAccountTable = this.dataHandler.getALLClient();
-    }
+   
 
-    public void setItemTable() {
-        this.itemTable = this.dataHandler.getAllItem();
-    }
-
-    public ArrayList<WishItem> getWishItems(ClientAccount client) throws RemoteException {
-        return dataHandler.getWishItems(client);
-    }
+   // public ArrayList<WishItem> getWishItems(ClientAccount client) throws RemoteException {
+     //   return dataHandler.getWishItems(client);
+    //}
 
     public MarketServiceImpl(ServerMain server, String marketName) throws RemoteException {
         super();
@@ -62,6 +56,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
             // If it is not registered then register it
 
         }
+        
 
         try {
             clientaccount = this.dataHandler.getClientAccount(name);
@@ -83,26 +78,32 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     }
 
     //@Override
-  /*  public synchronized void unRegister(String name) throws RemoteException {
-
-     Iterator<Item> iter = itemList.iterator();
-
-     while (iter.hasNext()) {
-     Item existItem = iter.next();
-
-     if (existItem.getOwner().equals(name)) {
-     iter.remove();
-     }
-     }
-        
-
-     }
-     notifiableClientTable.remove(name);
-       
+    @Override
+  public synchronized void unRegister(String name,char[] password) throws RemoteException{
+      
+      
+      ClientAccount client= clientAccountTable.get(name);
+      
+      if(client!=null){
+          notifiableClientTable.remove(name);
+          clientAccountTable.remove(name); 
+        this.dataHandler.removeAllWishItem(name);
+        this.dataHandler.removeItems(name);
+          try {
+              this.dataHandler.removeClient(name,password);
+          } catch (RejectedException ex) {
+              Logger.getLogger(MarketServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+          }
+         
+      }
+      
+      
         
      marketServer.getMainView().updateGUI();
+     }
+     
 
-     }*/
+     
     @Override
     public synchronized void sellItem(String itemName, float price, ClientAccount sellerAccount) throws RemoteException {
 
@@ -112,31 +113,32 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
         this.itemTable.put(itemForSell.getItemID(), itemForSell);
 
         this.dataHandler.storeItem(itemForSell);
-
-        ArrayList<WishItem> wantedItems = dataHandler.getMatchedWishItems(itemForSell);
-        if (wantedItems == null) {
+         marketServer.getMainView().updateGUI();
+        
+        //ArrayList<WishItem> wantedItems = dataHandler.getMatchedWishItems(itemForSell);
+        WishItem wantedItem=dataHandler.getMatchedWishItem(itemForSell);
+        if (wantedItem == null) {
             return;
         }
-        for (WishItem wanted : wantedItems) {
             // We have notify the notifiable clients
-            ClientInterface client = notifiableClientTable.get(wanted.getWisher());
+            ClientInterface client = notifiableClientTable.get(wantedItem.getWisher());
             try {
                 client.notifyItemAvailable(itemName, price);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
 
-        }
+        
 
-        marketServer.getMainView().updateGUI();
-
+        
+      
     }
 
     @Override
     public synchronized boolean buyItem(Item item, ClientAccount buyerAccount) throws RemoteException {
         float itemPrice = item.getItemPrice();
         BankAccount buyerBankAccount = buyerAccount.getBankAccount();
-
+        
         //check if the buyer has enough money to buy the item
         if (buyerBankAccount.getBalance() < itemPrice) {
             return false;
@@ -148,23 +150,28 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
 
                 BankAccount sellerBankAccount = account.getBankAccount();
 
+                item.setSold();
+                item.setBuyer(buyerAccount.getUserName());
+                this.dataHandler.updateItem(item);
+                ClientInterface client = this.notifiableClientTable.get(item.getOwner());
                 sellerBankAccount.deposit(itemPrice);
+                client.notifyItemSoldout(item.getItemName(), itemPrice, sellerBankAccount.getBalance());
                 buyerBankAccount.withdraw(itemPrice);
-                Item findItem = this.itemTable.get(item.getItemID());
+                client.notifyItemBought(item.getItemName(), itemPrice, buyerBankAccount.getBalance());
+                
+                
+                marketServer.getMainView().updateGUI();
+                
+                //client.notifyItemBought(item.getItemName(), itemPrice, buyerBankAccount.getBalance());
+                //client.notifyItemSoldout(item.getItemName(), itemPrice, sellerBankAccount.getBalance());
+                 
 
-                if (findItem != null) {
-                    findItem.setSold();
-                    findItem.setBuyer(buyerAccount.getUserName());
-                    this.dataHandler.updateItem(findItem);
-                    ClientInterface client = this.notifiableClientTable.get(findItem.getOwner());
-                    client.notifyItemSoldout(findItem.getItemName(), itemPrice);
-                    //itemTable.remove(item.getItemID(), findItem);
-                }
+                return true;
 
             } catch (RejectedException ex) {
                 Logger.getLogger(MarketServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
-            return true;
 
         }
 
@@ -178,35 +185,43 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
             try {
 
                 BankAccount sellerBankAccount = account.getBankAccount();
+                
+                    item.setSold();
+                    item.setBuyer(buyerAccount.getUserName());
+                    this.dataHandler.updateItem(item);
+                    sellerBankAccount.deposit(itemPrice);
+                    buyerBankAccount.withdraw(itemPrice);
+                    ClientInterface client = this.notifiableClientTable.get(item.getOwner());
+                    marketServer.getMainView().updateGUI();
+                    client.notifyItemSoldout(item.getItemName(), itemPrice,sellerBankAccount.getBalance());
+                    client.notifyItemBought(item.getItemName(), itemPrice, buyerBankAccount.getBalance());
 
-                sellerBankAccount.deposit(itemPrice);
-                buyerBankAccount.withdraw(itemPrice);
-                Item findItem = this.itemTable.get(item.getItemID());
-
-                if (findItem != null) {
-                    findItem.setSold();
-                    findItem.setBuyer(buyerAccount.getUserName());
-                    this.dataHandler.updateItem(findItem);
-                    ClientInterface client = this.notifiableClientTable.get(findItem.getOwner());
-                    client.notifyItemSoldout(item.getItemName(), itemPrice);
-                    itemTable.remove(item.getItemID(), findItem);
-                }
+                    return true;
+                
 
             } catch (RejectedException ex) {
                 Logger.getLogger(MarketServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                
+               return false;
             }
-            return true;
 
         }
 
-        marketServer.getMainView().updateGUI();
-        return false;
-
+     return false;
     }
 
     @Override
     public synchronized WishItem wishItem(String itemName, float price, ClientAccount wishBuyerAccount) throws RemoteException {
+
         String wishBuyerName = wishBuyerAccount.getUserName();
+        ArrayList<WishItem> existedWishes = this.dataHandler.getWishItems(wishBuyerAccount);
+        for (WishItem exist : existedWishes) {
+            if (exist.getWishItemName().equals(itemName)) {
+                return null;
+
+            }
+
+        }
         WishItem wishedItem = new WishItem(itemName, price, wishBuyerName);
 
         dataHandler.storeWish(wishedItem);
@@ -222,44 +237,36 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
      */
     @Override
     public synchronized HashMap<UUID, Item> getAllItem() throws RemoteException {
-
-        return itemTable;
+        //this.itemTable=this.dataHandler.getAllItem();
+        return this.dataHandler.getAllItem();
 
     }
 
    // @Override
    /* public synchronized ArrayList<Item> getAllWishItem() throws RemoteException {
 
-        return wishItemList;
+     return wishItemList;
 
-    }*/
-
+     }*/
     @Override
-    public synchronized ArrayList<WishItem> updateWishItemList(ClientAccount client,WishItem item) throws RemoteException {
-          ArrayList<WishItem> wishedItem=this.dataHandler.getWishItems(client);
-        for (WishItem itemWish : wishedItem) {
-            if(itemWish.getWishItemName().equals(item.getWishItemName())){
-                wishedItem.remove(item);
-                
-           
-                break;
+    public synchronized void updateWishItemList(ClientAccount client, WishItem item) throws RemoteException {
 
-            }
-        }
-        return wishedItem;
+        this.dataHandler.removeWishItem(item);
 
+        //return this.getWishedList(client);
     }
-    
+
     @Override
-    public synchronized ArrayList<WishItem> getWishedList(ClientAccount client)throws RemoteException{
+    public synchronized ArrayList<WishItem> getWishedList(ClientAccount client) throws RemoteException {
         return this.dataHandler.getWishItems(client);
-        
+
     }
+
     @Override
     public synchronized void addClientNotifyObject(ClientInterface clientInterfaceObj, ClientAccount client) throws RemoteException {
 
-       Set <String> clientNames = notifiableClientTable.keySet();
-       Iterator<String> iterator = clientNames.iterator();
+        Set<String> clientNames = notifiableClientTable.keySet();
+        Iterator<String> iterator = clientNames.iterator();
        
         while (iterator.hasNext()) {
             String name = iterator.next();
@@ -274,8 +281,8 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     }
 
     public synchronized HashMap<String, ClientAccount> getAllClients() throws RemoteException {
-
-        return this.clientAccountTable;
+       //this.clientAccountTable=this.dataHandler.getALLClient();
+        return this.dataHandler.getALLClient();
     }
 
     /**
@@ -312,4 +319,42 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
         return null;
     }
 
+    public synchronized void setClientTable() {
+        this.clientAccountTable= this.dataHandler.getALLClient();
+        
+    }
+
+    public synchronized void setItemTable() {
+        this.itemTable=this.dataHandler.getAllItem();
+        
+    }
+
+    @Override
+    public synchronized ClientAccount getMatchedClient(String name,char[] password) throws RemoteException{
+        try {
+            return this.dataHandler.getClientAccountByNameAndPassword(name, password);
+        } catch (RejectedException ex) {
+            Logger.getLogger(MarketServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public void logout(ClientAccount client) throws RemoteException {
+       this.notifiableClientTable.remove(client.getUserName());
+       
+    }
+
+    @Override
+    public int getBoughtAmount(String name) throws RemoteException {
+       
+         return this.dataHandler.getBoughtAmount(name);
+    }
+
+    @Override
+    public int getSelledAmount(String userName) throws RemoteException {
+       return this.dataHandler.getSelledAmount(userName);
+    }
+    
+   
 }

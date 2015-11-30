@@ -58,7 +58,7 @@ public class ServerMainView extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(itemList);
 
-        jLabel1.setText("Resistered Clients:");
+        jLabel1.setText("Registered Clients:");
 
         jScrollPane2.setViewportView(clientList);
 
@@ -127,8 +127,10 @@ public class ServerMainView extends javax.swing.JFrame {
         } catch (Exception e) {
             
         }
+        
          DefaultListModel itemModel = new DefaultListModel();
         try {
+            
             
             HashMap<UUID,Item> itemTable=((MarketServiceImpl)(this.mainServer.getServer())).getAllItem();
             
@@ -137,6 +139,7 @@ public class ServerMainView extends javax.swing.JFrame {
                 itemModel.addElement(value);
             }
             this.itemList.setModel(itemModel);
+            
         }catch(Exception e){
             
         }

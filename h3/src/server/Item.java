@@ -63,6 +63,9 @@ public class Item implements Serializable {
     public void setBuyer(String buyer){
         this.buyer=buyer;
     }
+    public String getBuyer(){
+        return buyer;
+    }
     @Override
     public String toString() {
 
