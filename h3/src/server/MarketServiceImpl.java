@@ -137,6 +137,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
     @Override
     public synchronized boolean buyItem(Item item, ClientAccount buyerAccount) throws RemoteException {
         float itemPrice = item.getItemPrice();
+        String buyer=buyerAccount.getUserName();
         BankAccount buyerBankAccount = buyerAccount.getBankAccount();
         
         //check if the buyer has enough money to buy the item
@@ -157,6 +158,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
                 sellerBankAccount.deposit(itemPrice);
                 client.notifyItemSoldout(item.getItemName(), itemPrice, sellerBankAccount.getBalance());
                 buyerBankAccount.withdraw(itemPrice);
+                client=this.notifiableClientTable.get(buyer);
                 client.notifyItemBought(item.getItemName(), itemPrice, buyerBankAccount.getBalance());
                 
                 

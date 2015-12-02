@@ -421,7 +421,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createBankAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBankAccountButtonActionPerformed
-
+        
+        if(this.accountNameTextField.getText().length()==0){
+            JOptionPane.showMessageDialog(this, "input is invalid", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
 
             this.bankAccount = bankObj.createAccount(accountNameTextField.getText());
@@ -433,13 +437,14 @@ public class ClientMainJframe extends javax.swing.JFrame {
         }
         
         if(bankAccount!=null){
+            this.getBankAccountButton.setEnabled(false);
             this.bankText.append("your bank account is successfully created!"+"\n");
             
-        }
+        }else{
         
         JOptionPane.showMessageDialog(this, "this bank account is not created successfully", "Error", JOptionPane.ERROR_MESSAGE);
       
-
+        }
 
     }//GEN-LAST:event_createBankAccountButtonActionPerformed
 
@@ -448,6 +453,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
             // TODO add your handling code here:
             char[] pass=this.PasswordField.getPassword();
             String passwordStr = new String(pass);
+            if(this.userNameTextField.getText().length()==0)
+            {
+            JOptionPane.showMessageDialog(this, "Y our input name is not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if(passwordStr.length()<8){
                 JOptionPane.showMessageDialog(this, "The length of password can not be less than 8.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -480,7 +490,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             this.registerMarketButton.setEnabled(false);
 
             //sent client interface reference to server
-            //this.market.addClientNotifyObject(clientInterfaceObj, client);
+           this.market.addClientNotifyObject(clientInterfaceObj, client);
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(this, "this bank account name has already been existed", "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
@@ -495,9 +505,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             registerMarketButton.setEnabled(true);
             unregisterMarketButton.setEnabled(false);
 
-        } catch (RemoteException ex) {
-            Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RejectedException ex) {
+        } catch (RemoteException | RejectedException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -506,7 +514,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
         try {
             // TODO add your handling code here:\
-            this.market.addClientNotifyObject(clientInterfaceObj, client);
+            //this.market.addClientNotifyObject(clientInterfaceObj, client);
             market.sellItem(itemNameTextField.getText(), Float.valueOf(itemPriceTextField.getText()), client);
             this.marketText.append("your item " + itemNameTextField.getText() + " is in the market now" + "\n");
             
@@ -671,7 +679,8 @@ public class ClientMainJframe extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.bankText.append(accountNameTextField.getText()+" ,your account has "+balance);
+            this.createBankAccountButton.setEnabled(false);
+            this.bankText.append(accountNameTextField.getText()+" ,your account has "+balance+"\n");
         }
         
     }//GEN-LAST:event_getBankAccountButtonActionPerformed
@@ -746,8 +755,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
         this.marketText.setText(null);
         this.userNameTextField.setText(null);
         this.PasswordField.setText(null);
+        this.itemNameTextField.setText(null);
+        this.itemPriceTextField.setText(null);
          this.userNameTextField.setEnabled(true);
             this.PasswordField.setEnabled(true);
+            
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void getRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getRecordButtonActionPerformed
