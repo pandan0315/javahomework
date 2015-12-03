@@ -1,7 +1,7 @@
 package server;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
+//import java.rmi.RemoteException;
 import java.util.UUID;
 
 /**
@@ -16,7 +16,7 @@ public class Item implements Serializable {
     private String buyer=null;
     private final UUID itemID;
      private ItemState state = ItemState.OnSell;
-    private String wisher;
+   
 
     public Item(String name, float price, String owner) {
         this.name = name;

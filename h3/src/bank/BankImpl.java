@@ -36,31 +36,23 @@ public class BankImpl extends UnicastRemoteObject implements Bank {
        
         if (account != null) {
             return null;
-           // System.out.println("Account [" + name + "] exists!!!");
-            //throw new RejectedException("Rejected: Bank: " + bankName
-             //       + " Account for: " + name + " already exists: " + account);
+           
         }
         account = this.dataHandler.getBankAccountByname(name);
          if (account != null){
              
             this.accounts.put(name, account);
               return null;
-           // System.out.println("Account [" + name + "] exists!!!");
-           // throw new RejectedException("Rejected: Bank: " + bankName
-            //        + " Account for: " + name + " already exists: " + account);
-          
+           
          }
         try {
+            
             this.dataHandler.storeBankAccount(name);
             account = new BankAccountImpl(name,this.dataHandler.getConnection());
             
             
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BankImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(BankImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(BankImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         

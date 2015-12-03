@@ -77,7 +77,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
 
     }
 
-    //@Override
+
     @Override
   public synchronized void unRegister(String name,char[] password) throws RemoteException{
       
@@ -155,8 +155,10 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
                 item.setBuyer(buyerAccount.getUserName());
                 this.dataHandler.updateItem(item);
                 ClientInterface client = this.notifiableClientTable.get(item.getOwner());
+                
                 sellerBankAccount.deposit(itemPrice);
                 client.notifyItemSoldout(item.getItemName(), itemPrice, sellerBankAccount.getBalance());
+                
                 buyerBankAccount.withdraw(itemPrice);
                 client=this.notifiableClientTable.get(buyer);
                 client.notifyItemBought(item.getItemName(), itemPrice, buyerBankAccount.getBalance());
@@ -282,6 +284,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
         notifiableClientTable.put(client.getUserName(), clientInterfaceObj);
     }
 
+    @Override
     public synchronized HashMap<String, ClientAccount> getAllClients() throws RemoteException {
        //this.clientAccountTable=this.dataHandler.getALLClient();
         return this.dataHandler.getALLClient();
@@ -299,7 +302,7 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
         return notifiableClientTable;
     }
 
-    void getDataHandler(DataHandler dataHandler) {
+    public void getDataHandler(DataHandler dataHandler){
 
         this.dataHandler = dataHandler;
 
