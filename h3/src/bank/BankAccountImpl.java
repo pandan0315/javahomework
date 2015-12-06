@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by danpan on 21/11/15.
+ * 
  */
 public class BankAccountImpl extends UnicastRemoteObject implements BankAccount {
 

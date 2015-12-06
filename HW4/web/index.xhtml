@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Welcome to Currency Convert!</title>
+    </h:head>
+    <h:body>
+         <h1>Welcome to Currency Convert!</h1>
+         <h:form>
+             <p>
+                 <h:outputLabel value="Original Currency: "/>
+                 <h:selectOneMenu value="#{currencyManager.currOrigin}">
+                     <f:selectItem itemValue="SEK" itemLabel="SEK"/>
+                     <f:selectItem itemValue="USD" itemLabel="USD"/>
+                     <f:selectItem itemValue="EUR" itemLabel="EUR"/>
+                     <f:selectItem itemValue="CNY" itemLabel="CNY"/>
+                 </h:selectOneMenu>
+                 
+                  <h:outputLabel value="Target Currency: "/>
+                 <h:selectOneMenu value="#{currencyManager.currTarget}">
+                     <f:selectItem itemValue="SEK" itemLabel="SEK"/>
+                     <f:selectItem itemValue="USD" itemLabel="USD"/>
+                     <f:selectItem itemValue="EUR" itemLabel="EUR"/>
+                     <f:selectItem itemValue="CNY" itemLabel="CNY"/>
+                 </h:selectOneMenu>   
+                 
+             </p>
+             <p>
+                 <h:outputLabel value="Amount to convert: "/>
+                <h:inputText  value="#{currencyManager.amount}"/>
+                 
+             </p>
+             <p>
+                  <h:commandButton value="Convert" action="#{currencyManager.convert}"/>
+                  
+             </p>
+             
+         </h:form>
+         <p>Result: <h:outputText value="#{currencyManager.result}"/></p>
+    </h:body>
+</html>
+

@@ -57,7 +57,6 @@ public class MarketServiceImpl extends UnicastRemoteObject implements MarketServ
 
         }
         
-
         try {
             clientaccount = this.dataHandler.getClientAccount(name);
 

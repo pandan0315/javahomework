@@ -7,6 +7,7 @@ package server;
 
 import bank.Bank;
 import bank.BankImpl;
+import java.net.MalformedURLException;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author danpan
+ * 
  */
 public class ServerMain {
 
@@ -31,8 +32,7 @@ public class ServerMain {
     
     public ServerMain() {
         
-        
-       
+     
         
         try {
             service = new MarketServiceImpl(this, "Blocket");
@@ -48,7 +48,7 @@ public class ServerMain {
             Naming.rebind("ICABANK", bank);
             Naming.rebind("BlocketServer", service);
 
-        } catch (Exception e) {
+        } catch (RemoteException | MalformedURLException e) {
             System.err.println(e.getMessage());
         }
         

@@ -8,7 +8,9 @@ package clientmain;
 import bank.Bank;
 import bank.BankAccount;
 import bank.RejectedException;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Collection;
@@ -30,7 +32,7 @@ import server.WishItem;
 
 /**
  *
- * @author danpan
+ * 
  */
 public class ClientMainJframe extends javax.swing.JFrame {
 
@@ -75,7 +77,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             }
             bankObj = (Bank) Naming.lookup("ICABANK");
             market = (MarketService) Naming.lookup("BlocketServer");
-        } catch (Exception e) {
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             System.out.println("The runtime failed: " + e.getMessage());
             System.exit(0);
         }
@@ -437,6 +439,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
         }
         
         if(bankAccount!=null){
+            this.createBankAccountButton.setEnabled(false);
             this.getBankAccountButton.setEnabled(false);
             this.bankText.append("your bank account is successfully created!"+"\n");
             
@@ -600,7 +603,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
-        if(client!=null){
+        if (client != null) {
             try {
                 this.market.unRegister(this.userNameTextField.getText(), this.PasswordField.getPassword());
                 this.unregisterMarketButton.setEnabled(false);
@@ -608,18 +611,27 @@ public class ClientMainJframe extends javax.swing.JFrame {
                 this.registerMarketButton.setEnabled(true);
                 this.logOutButton.setEnabled(false);
                 this.sellButton.setEnabled(false);
-        this.buyButton.setEnabled(false);
-        this.getAllItemButton.setEnabled(false);
-        this.getClientWishButton.setEnabled(false);
-        this.removeWishButton.setEnabled(false);
-        this.wishButton.setEnabled(false);
-        this.getRecordButton.setEnabled(false);
-        this.registerMarketButton.setEnabled(true);
-        this.marketText.setText(null);
-        this.userNameTextField.setText(null);
-        this.PasswordField.setText(null);
-         this.userNameTextField.setEnabled(true);
-            this.PasswordField.setEnabled(true);
+                this.buyButton.setEnabled(false);
+                this.getAllItemButton.setEnabled(false);
+                this.getClientWishButton.setEnabled(false);
+                this.removeWishButton.setEnabled(false);
+                this.wishButton.setEnabled(false);
+                this.getRecordButton.setEnabled(false);
+                this.registerMarketButton.setEnabled(true);
+                this.marketText.setText(null);
+                this.userNameTextField.setText(null);
+                this.PasswordField.setText(null);
+                this.itemModel.removeAllElements();
+                this.itemModel1.removeAllElements();
+                this.itemNameTextField.setText(null);
+                this.itemPriceTextField.setText(null);
+                this.userNameTextField.setEnabled(true);
+                this.PasswordField.setEnabled(true);
+                this.createBankAccountButton.setEnabled(true);
+                this.getBankAccountButton.setEnabled(true);
+                this.accountNameTextField.setText(null);
+                this.depositTextField.setText(null);
+                this.bankText.setText(null);
             } catch (RemoteException ex) {
                 Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
                 return;
@@ -680,6 +692,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
                 Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.createBankAccountButton.setEnabled(false);
+            this.getBankAccountButton.setEnabled(false);
             this.bankText.append(accountNameTextField.getText()+" ,your account has "+balance+"\n");
         }
         
@@ -759,6 +772,11 @@ public class ClientMainJframe extends javax.swing.JFrame {
         this.itemPriceTextField.setText(null);
          this.userNameTextField.setEnabled(true);
             this.PasswordField.setEnabled(true);
+            this.createBankAccountButton.setEnabled(true);
+            this.getBankAccountButton.setEnabled(true);
+            this.accountNameTextField.setText(null);
+                this.depositTextField.setText(null);
+                this.bankText.setText(null);
             
     }//GEN-LAST:event_logOutButtonActionPerformed
 
@@ -767,7 +785,7 @@ public class ClientMainJframe extends javax.swing.JFrame {
             // TODO add your handling code here:
             int boughtAmount=this.market.getBoughtAmount(this.client.getUserName());
             int selledAmount=this.market.getSelledAmount(this.client.getUserName());
-            this.marketText.append(client.getUserName()+" selled "+selledAmount+" items!"+"\n");
+            this.marketText.append(client.getUserName()+" sold "+selledAmount+" items!"+"\n");
             this.marketText.append(client.getUserName()+" bought "+boughtAmount+" items!"+"\n");
         } catch (RemoteException ex) {
             Logger.getLogger(ClientMainJframe.class.getName()).log(Level.SEVERE, null, ex);
