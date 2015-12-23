@@ -8,10 +8,10 @@ package view;
 import controller.CurrConvertBean;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.enterprise.context.Conversation;
+//import javax.enterprise.context.Conversation;
 
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+
 import javax.inject.Named;
 
 
@@ -22,6 +22,7 @@ import javax.inject.Named;
 @Named("currencyManager")
 @SessionScoped
 public class CurrencyManager implements Serializable {
+    private static final long serialVersionUID = 1427569293714564614L;
     
     private Float amount;
     private Exception convertFailure;
@@ -98,5 +99,5 @@ public Exception getException() {
 public boolean getSuccess() {
         return convertFailure == null;
     }
-    
+   
 }

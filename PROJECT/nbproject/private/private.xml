@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/view/User.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/controller/ProductFacadeBean.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/entity/UserAccount.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/entity/ShoppedProduct.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/entity/Product.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/web/product.xhtml</file>
+            <file>file:/Users/danpan/Documents/PROJECT/web/index.xhtml</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/view/ProductView.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/src/java/controller/UserFacadeBean.java</file>
+            <file>file:/Users/danpan/Documents/PROJECT/web/WEB-INF/web.xml</file>
+            <file>file:/Users/danpan/Documents/PROJECT/web/cart.xhtml</file>
+            <file>file:/Users/danpan/Documents/PROJECT/web/inventory.xhtml</file>
+        </group>
+    </open-files>
+</project-private>

@@ -6,21 +6,28 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.LockModeType;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author danpan
+ * 
+ * 
  */
-@Entity
+
+@Entity(name="Currency")
 public class Currency implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id    
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String currencyName;
+    
     private float currencyRate;
     
    /* private Long id;
@@ -62,9 +69,13 @@ public class Currency implements Serializable {
         return "model.Currency[ id=" + currencyName + " ]";
     }
 
-    
+    public void setCurrencyRate(float currencyRate){
+        this.currencyRate=currencyRate;
+    }
 
-   
+   public String getCurrencyName(){
+       return this.currencyName;
+   }
     public float getCurrencyRate() {
         return this.currencyRate;
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

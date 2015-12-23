@@ -17,12 +17,14 @@ import model.Currency;
  *
  * @author danpan
  */
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-@Stateless
+
+//@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Stateless //did not associtate to any special user, there is a instance pool .
 public class CurrConvertBean {
+    //inject an entitymanager created by the contatiner using information in the persistence .xml
     @PersistenceContext(unitName = "currencyPU")
     private EntityManager em;
-
+    
     /**
      *
      * @param originalCurrency
@@ -43,6 +45,10 @@ public class CurrConvertBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    
+
+    
 
    
 }

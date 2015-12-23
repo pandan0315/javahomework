@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Product Detail</title>
+    </h:head>
+    <h:body>
+        <h:outputText id="cartSize" value="Your cart has #{user.itemsInCart} items"/><br/><br/>
+        Product Name is: #{productView.product.productName}<br/>
+        Product Price is:  #{productView.product.productPrice}<br/>
+        Available Number are: #{productView.product.productNum}<br/>
+
+
+
+        <h:form id="form">
+
+            <input type="hidden" name="query" value='#{productView.query}'/>
+            <h:commandButton value="Add to Cart" action="#{user.addToCart}">
+                <f:ajax execute='@form' render=":cartSize"/>
+            </h:commandButton>
+            <p>
+                <a href="inventory.xhtml">Back to Inventory List</a>
+            </p>
+             <p>
+                <a href="cart.xhtml">Back to Shopping Cart</a>
+            </p>
+        </h:form>
+
+    </h:body>
+</html>
+
