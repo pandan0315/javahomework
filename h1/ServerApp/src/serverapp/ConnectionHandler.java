@@ -7,7 +7,11 @@ package serverapp;
 
 //import java.io.BufferedInputStream;
 //import java.io.BufferedOutputStream;
+import message.Message;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
@@ -17,7 +21,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import message.Message;
+
+       
 
 /**
  *
@@ -53,15 +58,19 @@ class ConnectionHandler implements Runnable {
     public void run() {
 
         try (   ObjectOutputStream out= new ObjectOutputStream(clientSocket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
+                //BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
+                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
                
                ) {
 
             while (true) {
                 String previousOutMsg=Arrays.toString(currentWord);
-                String msg = in.readLine();
                 
-                processMsg(msg);
+                String msg = in.readUTF();
+                 processMsg(msg);
+               
+                
+               
              
                 if(attempts>=0&&!outMsg.contains("_")){
                     gameStatus="YOU WIN!";
@@ -73,7 +82,7 @@ class ConnectionHandler implements Runnable {
                         score-=1;
                     }
                 }
-              Thread.sleep(5000);
+            //  Thread.sleep(5000);
                 Message retMessage = new Message(attempts,outMsg,score,gameStatus);
                 System.out.println(retMessage);
                 out.writeObject(retMessage);
@@ -82,18 +91,16 @@ class ConnectionHandler implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (InterruptedException ex) {
-           Logger.getLogger(ConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
 
-    }
+    } 
 
     private void processMsg(String msgStr) {
          String previousOutMsg= Arrays.toString(currentWord);
         if (msgStr == null || msgStr.length() == 0) {
             return;
         }
-        String startStr = "_start_";
+        String startStr = "start";
         if (msgStr.equals(startStr)) {
             
            this.guessedWord.clear();
@@ -110,18 +117,22 @@ class ConnectionHandler implements Runnable {
             this.isGuessedWord=this.guessedWord.contains(msgStr);
             if (!guessedWord.contains(msgStr)) {
             guessedWord.add(msgStr);
+            
         }
              
             compareWord(msgStr, pickedWord);
+            
        
         }
         
         outMsg=Arrays.toString(currentWord);
         
-        if(previousOutMsg.equals(outMsg)&&!this.isGuessedWord&&!this.guessedWord.isEmpty()){
+       // if(previousOutMsg.equals(outMsg)&&!this.isGuessedWord&&!this.guessedWord.isEmpty()){
+         //   this.attempts-=1;
+        //}
+        if(previousOutMsg.equals(outMsg)){
             this.attempts-=1;
         }
-        
         
     }
 

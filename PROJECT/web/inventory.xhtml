@@ -2,16 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Inventory List</title>
     </h:head>
     <h:body>
        
       <h:form>
-            <h2>Welcome #{user.name1}</h2>
+          <h2>Welcome #{user.userName}!</h2>
            
-            <h:commandLink action="#{user.logout}" value="logout"/><br/>
+            <h:commandLink action="#{user.logout}" value="logout"/><br/><br/>
             
                 <a href="cart.xhtml">Shopping Cart (#{user.itemsInCart})</a>
             
@@ -19,10 +20,15 @@
        
         <h3>All available Inventory List :</h3>
            
-        <h:dataTable value="#{productView.products}" var="p">
+        <h:dataTable value="#{productView.productList}" var="p">
+            <h:column>
+                <p:graphicImage value="/resources/images/#{p.productName}.jpg" width="80px" height="80px" />   
+            </h:column>
+            
             <h:column>
                 <f:facet name="header"/>
                 <h:outputLink value="product.xhtml">
+                    
                     <f:param name="query" value="#{p.productName}"/>
                     <h:outputText value="#{p.productName}"/>
                 </h:outputLink>

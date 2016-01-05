@@ -42,9 +42,40 @@ public class User implements Serializable{
     private String name3;
     private String password3;
     private Integer balance;
-  
-    private UserAccount currentUser;
+    private boolean edit;
+    private UserAccount newUser=new UserAccount();
+    private String userName;
+   
+    
+   
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
+
+    
+    public UserAccount getNewUser() {
+        return newUser;
+    }
+
+    public void setNewUser(UserAccount newUser) {
+        this.newUser = newUser;
+    }
+
+    
     public void setBalance(Integer balance) {
         this.balance = balance;
     }
@@ -103,36 +134,76 @@ public class User implements Serializable{
 
    
    
-     private void handleException(Exception e) {
-        
-        e.printStackTrace(System.err);
-     
+    public List<UserAccount> getUserList(){
+        return this.userFacadeBean.getUsers();
     }
-
      
       private String jsf22Bugfix() {
         return "";
     }
+      
+      
+   
+      
     public String register() {
-        try {   
-         currentUser=this.userFacadeBean.register(name2, password2,balance);   
-        } catch (Exception e) {
-            handleException(e);
-        }
-        return jsf22Bugfix();
+        
+       
+       if(this.userFacadeBean.register(name2, password2,balance)==null){
+        RequestContext.getCurrentInstance().update("growl");
+        FacesContext context=FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Username has been registered!"));
+          
+           return jsf22Bugfix();
+           
+       }
+        
+        this.userName=name2;
+        
+       return "inventory.xhtml";
     }
    
            
     public String login(){
-        if(this.userFacadeBean.login(name1,password1)){
-           
-           
-            return "/inventory.xhtml";
-            
-        }else{
+         
+        String result=this.userFacadeBean.login(name1,password1);
+        if(result==null){
         RequestContext.getCurrentInstance().update("growl");
         FacesContext context=FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Username or Password invalid"));}
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Username or Password invalid"));
+          
+           
+       
+        }else if(result.equals("active")){
+            this.userName=name1;
+            
+            return "inventory.xhtml";
+            
+        }else{
+           RequestContext.getCurrentInstance().update("growl");
+        FacesContext context=FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","You are banned!"));
+           
+        }
+        
+        
+         return jsf22Bugfix();
+        }
+    
+       
+    
+    
+    public String adminlogin(){
+        
+        
+        if(name3.equals("admin")&&password3.equals("123456")){
+           
+            return "productEdit.xhtml";
+            
+        }else{
+       RequestContext.getCurrentInstance().update("growl");
+       FacesContext context=FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Please login with user admin! "));
+        } 
         return jsf22Bugfix();
     }
     
@@ -147,26 +218,26 @@ public class User implements Serializable{
         String query = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("query");
         Product pro = this.productFacadeBean.returnProduct(query);
 
-        this.productFacadeBean.addToCart(pro, name1);
+        this.productFacadeBean.addToCart(pro, userName);
         return jsf22Bugfix();
     }
 
     public int getItemsInCart() {
 
-        return this.productFacadeBean.getItemsNum(name1);
+        return this.productFacadeBean.getItemsNum(userName);
     }
 
     public List<ShoppedProduct> getShoppedProducts() {
-        return this.productFacadeBean.getShoppedProducts(name1);
+        return this.productFacadeBean.getShoppedProducts(userName);
     }
 
     public float getToPay() {
-        return this.productFacadeBean.getTotalPay(name1);
+        return this.productFacadeBean.getTotalPay(userName);
     }
 
     public String payout() {
         float finalPay = this.getToPay();
-        boolean isSuccess = this.userFacadeBean.payout(name1, finalPay);
+        boolean isSuccess = this.userFacadeBean.payout(userName, finalPay);
         if (!isSuccess) {
             RequestContext.getCurrentInstance().update("growl");
             FacesContext context = FacesContext.getCurrentInstance();
@@ -179,9 +250,19 @@ public class User implements Serializable{
 
     public String clear() {
 
-        this.userFacadeBean.clearCart(name1);
+        this.userFacadeBean.clearCart(userName);
          
         return jsf22Bugfix(); 
      }
+    
+    public String editUser(UserAccount usr){
+        this.newUser=usr;
+        this.edit=true;
+        return jsf22Bugfix();  
+    }
+   public void saveUserStatus(){
+       this.userFacadeBean.updateUserStatus(newUser);
+       edit=false;
+   }
 }
 

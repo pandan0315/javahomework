@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
@@ -18,7 +19,9 @@ import javax.persistence.NamedQuery;
  * @author danpan
  */
 @Entity
-@NamedQuery(name="Product.query",query="SELECT p FROM Product p WHERE p.productName=:productName")
+@NamedQueries({
+@NamedQuery(name="Product.query",query="SELECT p FROM Product p WHERE p.productName=:productName"),
+@NamedQuery(name="Product.queryID",query="SELECT p FROM Product p WHERE p.productId=:productId")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,6 +35,7 @@ public class Product implements Serializable {
     @Column(name = "productNum")
     private int productNum;
 
+   
     public Product() {
        
     }

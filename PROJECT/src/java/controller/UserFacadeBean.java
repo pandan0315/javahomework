@@ -27,28 +27,33 @@ public class UserFacadeBean {
 
 
     public UserAccount register(String name, String password,Integer balance) {
+        UserAccount user=em.find(UserAccount.class, name);
+        if(user==null){
         UserAccount newUser=new UserAccount(name,password,balance);
+        
         em.persist(newUser);
+        
         return newUser;
+        }
+        return null;
         
     }
     
     
-    public boolean login(String name, String password){
+    public String login(String name, String password){
        try{
         UserAccount u=em.createNamedQuery("UserAccount.control",UserAccount.class).setParameter("username", name).setParameter("password", password).getSingleResult();
-        if(u != null){
-            return true;
-            
-        }else{
-            return false;
+        
+        
+        if(u!=null){
+            return u.getStatus();
         }
               
         
        }catch(Exception e){
-           return false;
+           return null;
        }
-       
+       return null;
         
         
     }
@@ -98,6 +103,14 @@ public class UserFacadeBean {
    
     }
 }
+
+    public List<UserAccount> getUsers() {
+      return em.createQuery("SELECT u FROM UserAccount u").getResultList();
+    }
+
+    public void updateUserStatus(UserAccount newUser) {
+        em.merge(newUser);
+    }
 }
     
   

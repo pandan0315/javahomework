@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        <p:growl id="growl" sticky="true" showDetail="true"/>
+        <h:form><h:commandLink action="#{user.logout}" value="admin,logout"/><br/><br/>
+            
+         <a href="customerEdit.xhtml">Go to Customer Management Page</a>
+        </h:form>
+        
+        <hr/>
+        
+         <h2>Product Storage Management</h2>
+         <hr/>
+      
+         <h:form rendered="#{not empty productView.productList}">
+             <h:dataTable value="#{productView.productList}" var="p">
+
+    	     <h:column>
+    			
+                <f:facet name="header">Product ID</f:facet>
+    				
+                <h:outputText value="#{p.productId}"/>
+    				
+               
+					
+    	     </h:column>
+    			
+    	     <h:column>
+    			
+    		<f:facet name="header">Product Name</f:facet>
+    				
+    		<h:outputText value="#{p.productName}" />
+    				
+    		
+    				
+    	     </h:column>
+    			
+    	     <h:column>
+    				
+    		<f:facet name="header">Price</f:facet>
+    				
+                <h:outputText value="#{p.productPrice}" />
+    		
+    				
+    	     </h:column>
+    			
+    	     <h:column>
+    				
+    		<f:facet name="header">Quantity</f:facet>
+    				
+                <h:outputText value="#{p.productNum}"  />
+    				
+
+
+             </h:column>
+
+             <h:column>
+
+                 <f:facet name="header">Action</f:facet>
+
+                 <h:commandButton value="Edit" action="#{productView.editProduct(p)}"/>
+                 <h:commandButton value="Delete" action="#{productView.delete(p)}"/>
+
+             </h:column>
+
+           </h:dataTable>
+           </h:form>
+      <h:panelGroup rendered="#{empty productView.productList}">
+         <h3 >Empty Table.Add New Product.</h3>
+      </h:panelGroup>
+           <hr/>
+           <h2>Add or edit Product</h2>
+           <h:panelGroup rendered="#{!productView.edit}">
+               <h3 >Add New Product</h3>
+               <h:form>
+           <h:panelGrid columns="2" >
+               <h:outputLabel value="Product ID : "/>
+               <h:inputText value="#{productView.newProduct.productId}"/>
+               <h:outputLabel value="Product Name :"/>
+               <h:inputText value="#{productView.newProduct.productName}"/>
+               <h:outputLabel value="Product Price : "/>
+               <h:inputText value="#{productView.newProduct.productPrice}"/>
+
+               <h:outputLabel value="Product Num : "/>
+               <h:inputText value="#{productView.newProduct.productNum}"/>
+
+                <h:commandButton value="Add New Product"                                  
+                            action="#{productView.addNewProduct}"/>   
+           </h:panelGrid>
+          
+          </h:form>
+    	   </h:panelGroup>
+           
+           <h:panelGroup rendered="#{productView.edit}">
+             <h3>Edit Product</h3>  
+            <h:form>
+           <h:panelGrid columns="2" >
+               <h:outputLabel value="Product ID : "/>
+               <h:outputText value="#{productView.newProduct.productId}"/>
+               <h:outputLabel value="Product Name :"/>
+               <h:outputText value="#{productView.newProduct.productName}"/>
+               <h:outputLabel value="Product Price : "/>
+               <h:inputText value="#{productView.newProduct.productPrice}"/>
+
+               <h:outputLabel value="Product Num : "/>
+               <h:inputText value="#{productView.newProduct.productNum}"/>
+
+                <h:commandButton value="Save"                                  
+                                 action="#{productView.saveProduct()}"/>   
+           </h:panelGrid>
+          
+            </h:form>
+           
+           </h:panelGroup>	
+          
+    </h:body>
+</html>
+

@@ -10,11 +10,12 @@
     <h:body>
         <p:growl id="growl" sticky="true" showDetail="true"/>
         <h:form>
-            <h2> #{user.name1},your shopping cart as below:</h2>
+            <h2> #{user.userName},your shopping cart as below:</h2>
 
-            <h:commandLink action="#{user.logout}" value="logout"/><br/>
+            <h:commandLink action="#{user.logout}" value="logout"/><br/><br/>
 
-            <a href="inventory.xhtml">Back to the Inventory list</a>
+            <a href="inventory.xhtml">Back to the Inventory list</a><br/><br/>
+            
 
 
             <p:dataTable var="p" value="#{user.shoppedProducts}">

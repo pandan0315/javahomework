@@ -21,7 +21,7 @@ public class WordReader {
     public static synchronized String getWord() {
         //StringBuffer buffer = new StringBuffer();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("/Users/danpan/Documents/github/javahomework/h1/ServerApp/words.txt"));
             String line = reader.readLine();
             List<String> lines = new ArrayList<>();
             while (line != null) {

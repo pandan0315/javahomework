@@ -41,9 +41,19 @@ public class UserAccount implements Serializable {
     private String password;
     @Column(name = "balance")
     private float accountBalance;
+    @Column(name="status")
+    private String status;
     
      @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
      private List<ShoppedProduct> items;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
    
     public int totalNum(){
@@ -103,7 +113,7 @@ public class UserAccount implements Serializable {
  
       public UserAccount(String username, String password,float accountBalance) {
         this.items=new ArrayList<>();
-       
+        this.status="active";
         this.username = username;
         this.password = password;
         this.accountBalance=accountBalance;

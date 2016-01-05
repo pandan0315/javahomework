@@ -25,7 +25,9 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({
 @NamedQuery(name="findByProductID",query="SELECT p FROM ShoppedProduct p WHERE p.product=:product"),
-@NamedQuery(name="findByshoppingUser",query="SELECT p FROM ShoppedProduct p WHERE p.user=:user")})
+@NamedQuery(name="findByshoppingUser",query="SELECT p FROM ShoppedProduct p WHERE p.user=:user"),
+@NamedQuery(name="findByUserAndProduct",query="SELECT p FROM ShoppedProduct p WHERE p.user=:user and p.product=:product")
+})
 public class ShoppedProduct implements Serializable {
     private static final long serialVersionUID = 1L;
     

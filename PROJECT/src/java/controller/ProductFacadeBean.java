@@ -29,6 +29,9 @@ public class ProductFacadeBean {
     
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    public Product getProductById(Integer id){
+        return em.find(Product.class, id);
+    }
     
     public  List<Product> getItems(){
         return em.createQuery("SELECT p FROM Product p").getResultList();
@@ -47,7 +50,7 @@ public class ProductFacadeBean {
         
         try{
         
-        ShoppedProduct shoppedProduct=em.createNamedQuery("findByProductID", ShoppedProduct.class).setParameter("product", product).getSingleResult();
+        ShoppedProduct shoppedProduct=em.createNamedQuery("findByUserAndProduct", ShoppedProduct.class).setParameter("user", user).setParameter("product", product).getSingleResult();
        
         shoppedProduct.incrementNum();
         }catch(Exception e){
@@ -94,5 +97,25 @@ public class ProductFacadeBean {
     }
        return pay;
     }
+
+    public Product updateProductList(Product p) {
+     return  em.merge(p);
+        
+    }
+
+    public void delete(Product p) {
+      em.remove(em.merge(p));
+    }
+
     
+    
+    public boolean addNew(Product newProduct){
+        Product p=this.getProductById(newProduct.getProductId());
+        if(p==null){
+             em.persist(newProduct);
+             return true;
+        }
+       
+       return false;
+    }
 }

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Customer Management</title>
+    </h:head>
+    <h:body>
+         <p:growl id="growl" sticky="true" showDetail="true"/>
+         <h:form>
+            <h:commandLink action="#{user.logout}" value="admin,logout"/><br/><br/>
+            
+            
+            <a href="productEdit.xhtml">Go to Product Management Page</a>
+         </h:form>
+        
+         
+        <h2>Customer Management</h2>
+         <hr/>
+         
+          <h:form rendered="#{not empty user.userList}">
+              <h:dataTable value="#{user.userList}" var="u">
+
+    	     <h:column>
+    			
+                <f:facet name="header">User Name</f:facet>
+    				
+                <h:outputText value="#{u.username}"/>
+    				
+               
+					
+    	     </h:column>
+    			
+    	     <h:column>
+    			
+    		<f:facet name="header">User status</f:facet>
+    				
+                <h:outputText value="#{u.status}" />
+    				
+    		
+    				
+    	     </h:column>
+    			
+    	     
+    			
+    	     
+
+             <h:column>
+
+                 <f:facet name="header">Action</f:facet>
+
+                 <h:commandButton value="Edit" action="#{user.editUser(u)}"/>
+                
+
+             </h:column>
+
+           </h:dataTable>
+           </h:form>
+         <h:panelGroup rendered="#{empty user.userList}">
+         <h3 >Empty Table.No user registered.</h3>
+      </h:panelGroup>
+           <hr/>
+           
+           
+           
+           
+           <h:panelGroup rendered="#{user.edit}">
+               <h2>Edit Customer</h2>
+            
+            <h:form>
+           <h:panelGrid columns="2" >
+               <h:outputLabel value="User Name : "/>
+               <h:outputText value="#{user.newUser.username}"/>
+               
+               <h:outputLabel value="User Status : "/>
+              <h:selectOneMenu value="#{user.newUser.status}">
+                   <f:selectItem itemLabel="active" itemValue="active"/>
+                   <f:selectItem itemLabel="ban" itemValue="ban"/>
+               </h:selectOneMenu>
+               
+
+              
+                <h:commandButton value="Save"                                  
+                                 action="#{user.saveUserStatus()}"/>   
+           </h:panelGrid>
+          
+            </h:form>
+           
+           </h:panelGroup>	
+    </h:body>
+</html>
+

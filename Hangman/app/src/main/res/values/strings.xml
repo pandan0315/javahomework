@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Hangman</string>
+    <string name="welcome">Welcome to Hangman!</string>
+    <string name="connet_button">Connet to the server</string>
+    <string name="connet_hint">Connet to the server:</string>
+    <string name="connet">Connect...</string>
+    <string name="clear">Clear</string>
+    <string name="goToConnet">GoToConnet</string>
+    <string name="connect_success">Connect Server Success!</string>
+
+    <string name="game_command">Take a guess!</string>
+    <string name="game_guess">Guess!</string>
+    <string name="start_game">Start Game!</string>
+    <string name="go_to_connect">Go To Connection</string>
+</resources>
